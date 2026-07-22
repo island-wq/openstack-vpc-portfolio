@@ -1,0 +1,9 @@
+tmp/
+OpenStack-VPC-Portfolio-Guide.md
+node_modules/
+build/
+.docusaurus/
+.pnpm-store/
+.cache-loader/
+.DS_Store
+npm-debug.log*

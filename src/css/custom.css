@@ -1,0 +1,51 @@
+:root {
+  --ifm-color-primary: #087f9b;
+  --ifm-color-primary-dark: #07738c;
+  --ifm-color-primary-darker: #066d85;
+  --ifm-color-primary-darkest: #055a6d;
+  --ifm-color-primary-light: #098da9;
+  --ifm-color-primary-lighter: #0993b0;
+  --ifm-color-primary-lightest: #0aa6c7;
+  --ifm-font-family-base: Pretendard, Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --ifm-heading-font-weight: 750;
+  --ifm-code-font-size: 92%;
+}
+
+[data-theme='dark'] {
+  --ifm-color-primary: #48c8dd;
+  --ifm-color-primary-dark: #30c1d8;
+  --ifm-color-primary-darker: #24bdd5;
+  --ifm-color-primary-darkest: #1d9cb0;
+  --ifm-color-primary-light: #60cfe2;
+  --ifm-color-primary-lighter: #6cd3e5;
+  --ifm-color-primary-lightest: #90deeb;
+  --ifm-background-color: #07131f;
+  --ifm-background-surface-color: #0d2030;
+}
+
+body {
+  word-break: keep-all;
+}
+
+.markdown h1,
+.markdown h2,
+.markdown h3 {
+  letter-spacing: -0.025em;
+}
+
+.markdown h1 {
+  font-size: 2.6rem;
+}
+
+.markdown table {
+  display: table;
+  width: 100%;
+}
+
+.theme-doc-markdown mermaid {
+  margin: 2rem 0;
+}
+
+.alert {
+  border-radius: 0.8rem;
+}
