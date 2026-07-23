@@ -40,7 +40,7 @@ const sidebars = {
       items: [
         'poc/problem-and-goals',
         'poc/case-a-migration',
-        'poc/case-b-platform',
+        'poc/case-b-vmware to KVM',
         'poc/architecture-overview',
         'poc/test-scenarios',
         'poc/design-decisions',

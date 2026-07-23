@@ -37,7 +37,7 @@ description: Private Cloud PoC 설계 및 검증 사례
 
 1. [문제와 목표](./problem-and-goals.md)
 2. [Case A · 워크로드 이관](./case-a-migration.md)
-3. [Case B · 플랫폼 검증](./case-b-platform.md)
+3. [Case B · 플랫폼 검증](case-b-vmware%20to%20KVM.md)
 4. [PoC 아키텍처](./architecture-overview.md)
 5. [시험 시나리오](./test-scenarios.md)
 6. [핵심 설계 결정](./design-decisions.md)

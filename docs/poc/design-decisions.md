@@ -25,14 +25,14 @@ description: PoC 아키텍처와 시험 범위의 핵심 판단
 - 효과: East-West·Floating IP 처리 경로 단축
 - 제약: Compute별 Network Agent와 외부 연결 검증 필요
 
-## 외부 스토리지와 Multipath 적용
+## iSCSI Multipath 적용으로 스토리지 대역폭 안정화
 
-- 배경: Cinder Block Storage의 가용성 요구
+- 배경: Cinder Block Storage의 가용성 요구사항 만족
 - 결정: 전용 Storage Network와 이중 iSCSI 경로 적용
 - 효과: 단일 경로 장애 대응
 - 제약: MTU·VLAN·스토리지 정책 정합성 필요
 
-## 시험 결과 등급화
+## 시험 결과 등급화 적용
 
 - 배경: 단순 성공·실패만으로 운영 적합성 판단 곤란
 - 결정: 성공·조건부 성공·실패·미검증 분류

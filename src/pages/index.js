@@ -7,8 +7,8 @@ import styles from './index.module.css';
 const highlights = [
   ['3 Cases', 'VPC·HCI·Private Cloud PoC'],
   ['OpenStack', 'OVN·Geneve·Ceph 기반 기술 설계'],
-  ['End-to-End', '요구사항부터 검증·로드맵까지'],
-  ['Mermaid', '수정 가능한 아키텍처 다이어그램'],
+  ['End-to-End', '요구사항부터 검증·로드맵·PoC까지'],
+  ['Migration', 'VMware to KVM 마이그레이션'],
 ];
 
 const projects = [
