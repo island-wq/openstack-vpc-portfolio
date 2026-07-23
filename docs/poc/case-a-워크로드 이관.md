@@ -31,7 +31,6 @@ description: 퍼블릭 클라우드 워크로드의 Private Cloud 이관 PoC
 
 ## 주요 설계 쟁점
 
-- IPMI 원격관리망 확보 필요
 - Internal API·Tenant·External API·Provider·Storage 망 분리 필요
 - VM 라우팅의 Virtual Router 또는 상단망 처리 결정 필요
 - Public IP·Floating IP 정책 확정 필요

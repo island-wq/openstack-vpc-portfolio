@@ -15,7 +15,7 @@ description: Private Cloud PoC 설계 및 검증 사례
 |---|---|
 | 목표 | Private Cloud 도입 전 기술·운영 적합성 검증 |
 | 플랫폼 | OpenStack, OVN, KVM/QEMU, Cinder, 외부 스토리지 |
-| 사례 | Case A 이관형 PoC, Case B 플랫폼 검증형 PoC |
+| 사례 | Case A 이관형, Case B VMware 이관형, Case C 성능·고가용성 검증형 |
 | 핵심 기술 | VM·DB 이관, DVR, Security Group, Live Migration, Backup |
 | 설계 범위 | 물리·논리 아키텍처, 네트워크, 시험 항목, 판정 기준 |
 | 주요 제약 | 제한된 일정, 고객망 연동, 기존 운영정책, 외부 스토리지 의존 |
@@ -36,10 +36,11 @@ description: Private Cloud PoC 설계 및 검증 사례
 ## 문서 읽는 순서
 
 1. [문제와 목표](./problem-and-goals.md)
-2. [Case A · 워크로드 이관](./case-a-migration.md)
+2. [Case A · 워크로드 이관](case-a-워크로드%20이관.md)
 3. [Case B · 플랫폼 검증](case-b-vmware%20to%20KVM.md)
-4. [PoC 아키텍처](./architecture-overview.md)
-5. [시험 시나리오](./test-scenarios.md)
-6. [핵심 설계 결정](./design-decisions.md)
-7. [검증 범위와 판정](./validation.md)
-8. [성과와 로드맵](./results-and-roadmap.md)
+4. [Case C · 성능 및 고가용성 검증](./case-c-performance.md)
+5. [PoC 아키텍처](./architecture-overview.md)
+6. [시험 시나리오](./test-scenarios.md)
+7. [핵심 설계 결정](./design-decisions.md)
+8. [검증 범위와 판정](./validation.md)
+9. [성과와 로드맵](./results-and-roadmap.md)

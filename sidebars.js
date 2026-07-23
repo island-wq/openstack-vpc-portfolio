@@ -39,8 +39,9 @@ const sidebars = {
       link: {type: 'doc', id: 'poc/intro'},
       items: [
         'poc/problem-and-goals',
-        'poc/case-a-migration',
+        'poc/case-a-워크로드 이관',
         'poc/case-b-vmware to KVM',
+        'poc/case-c-performance',
         'poc/architecture-overview',
         'poc/test-scenarios',
         'poc/design-decisions',
