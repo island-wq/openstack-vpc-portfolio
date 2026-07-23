@@ -112,7 +112,7 @@ function Home() {
           <div className={clsx('container', styles.storyGrid)}>
             <div>
               <p className={styles.sectionLabel}>HOW I WORK</p>
-              <Heading as="h2">고객 요구사항을 만족하기 위한 설계 세우고 PoC를 통해 검증했습니다</Heading>
+              <Heading as="h2">고객 요구사항을 만족하기 위한 설계를 정의하고 다양한 PoC를 통해 검증하여 완성도 높은 상품을 구현하기 위해 노력했습니다</Heading>
             </div>
             <div className={styles.storyCopy}>
               <p>
