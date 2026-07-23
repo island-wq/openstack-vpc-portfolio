@@ -5,7 +5,10 @@ description: OpenStack Native VPC의 논리 및 배포 구조
 
 # 최종 아키텍처
 
-최종 구조는 **OpenStack Project를 VPC로 사용**하고, 사용자 네트워크는 **ML2/OVN 기반 Geneve Overlay**로 제공합니다. East-West와 Floating IP는 Compute Node에서 분산 처리하고, 일반 SNAT은 전용 Gateway Node로 분리합니다.
+1. **OpenStack Project를 VPC로 정의**
+2. 사용자 네트워크는 **ML2/OVN 기반 Geneve Overlay**로 제공. 
+3. East-West와 Floating IP는 Compute Node에서 분산 처리(DVR), 
+4. 일반 SNAT은 전용 Gateway Node로 분리
 
 ## 시스템 컨텍스트
 
@@ -90,22 +93,22 @@ flowchart TB
 
 ## 설계 특성
 
-### 분산되는 기능
+### 분산처리 패킷
 
 - 동일·다른 Subnet 간 East-West 라우팅
 - Floating IP가 연결된 VM의 DNAT/SNAT
 - Security Group Flow 적용
 
-### 집중되는 기능
+### 주요 트래픽 집중
 
 - Private Subnet의 일반 SNAT
 - External Gateway와 Provider Network 연결
 - Gateway Chassis 우선순위와 HA
 
-### 포털이 추상화해야 하는 기능
+### 추상화필요 기능
 
-- 계정과 다수 Project/VPC 매핑
-- VPC CIDR와 Subnet 중복 검증
-- Router를 Route Table로 표현
-- External Gateway를 Internet Gateway로 표현
-- 관리자 전용 Router Network와 NAT 자원 숨김
+- 1계정 당 N개의 Project(VPC) 매핑 기능 
+- VPC CIDR와 Subnet 중복 검증 기능
+- Router를 Route Table 등의 혼란방지 용어로 표현
+- External Gateway와 같은 특정 용어를 범용적 용어로 표현
+- 관리자 전용 Router Network와 NAT 자원 숨김 기능 
