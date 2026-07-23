@@ -5,7 +5,7 @@ description: 소규모 OpenStack HCI의 시스템 컨텍스트와 배포 구조
 
 # 최종 아키텍처
 
-최종 구조는 **관리·배포 노드 1대와 HCI 노드 3대**로 시작합니다. HCI 노드는 OpenStack Controller, Compute, Ceph 역할을 함께 수행하고, 관리 노드는 설치와 운영 기능을 분리합니다.
+최종 구조는 **관리·배포 노드 1대와 HCI 노드 3대**로 시작합니다. HCI 노드는 OpenStack Controller, Compute, Ceph 역할을 함께 수행하고, 관리 노드는 설치와 운영 기능을 분리
 
 ## 시스템 컨텍스트
 

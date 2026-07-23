@@ -15,14 +15,14 @@ const projects = [
   {
     number: '01',
     title: 'OpenStack Native VPC',
-    description: '전용 장비 중심 VPC를 ML2/OVN, Geneve, DVR 기반 구조로 재설계하고 성능과 가용성을 검증했습니다.',
+    description: 'Private Cloud를 위한 VPC를 ML2/OVN, Geneve, DVR 기반 구조로 재설계하고 성능과 가용성을 검증.',
     tags: ['VPC', 'OVN', 'DVR', 'HA'],
     link: '/docs/intro',
   },
   {
     number: '02',
     title: 'Small HCI Product Design',
-    description: '대형 랙 상품과 소형 가상화 제품 사이의 공백을 4노드 OpenStack HCI 상품으로 설계했습니다.',
+    description: '대형 랙 상품을 보 완하기 위한 소용량 가상화 제품 HCI 상품 설계',
     tags: ['HCI', 'Ceph', 'PXE', '10GbE'],
     link: '/docs/hci/intro',
   },
@@ -38,9 +38,9 @@ function Home() {
         <div className="container">
           <p className={styles.eyebrow}>PRIVATE CLOUD ARCHITECTURE PORTFOLIO</p>
           <Heading as="h1" className={styles.heroTitle}>
-            복잡한 인프라 요구사항을
+            프라이빗 클라우드에 VPC
             <br />
-            실행 가능한 아키텍처로 설계하다
+            구성이 가능하다고?
           </Heading>
           <p className={styles.heroSubtitle}>
             OpenStack 기반 VPC 설계부터 소규모 HCI 상품화까지,
@@ -48,10 +48,10 @@ function Home() {
           </p>
           <div className={styles.heroButtons}>
             <Link className="button button--primary button--lg" to="/docs/intro">
-              VPC 사례 보기
+              VPC 아키텍처 설계 및 구현
             </Link>
             <Link className="button button--secondary button--lg" to="/docs/hci/intro">
-              HCI 사례 보기
+              HCI 설계 및 구현
             </Link>
           </div>
         </div>
@@ -72,7 +72,7 @@ function Home() {
         <section className={styles.projectsSection}>
           <div className="container">
             <p className={styles.sectionLabel}>SELECTED WORK</p>
-            <Heading as="h2" className={styles.sectionTitle}>설계 의도와 판단 근거를 함께 보여주는 사례</Heading>
+            <Heading as="h2" className={styles.sectionTitle}>설계 및 구현 사례</Heading>
             <div className={styles.projectGrid}>
               {projects.map((project) => (
                 <Link className={styles.projectCard} to={project.link} key={project.number}>
@@ -92,16 +92,14 @@ function Home() {
           <div className={clsx('container', styles.storyGrid)}>
             <div>
               <p className={styles.sectionLabel}>HOW I WORK</p>
-              <Heading as="h2">구성도보다 먼저 문제와 트레이드오프를 설명합니다.</Heading>
+              <Heading as="h2">고객 요구사항을 만족하기 위한 설계 세우고 PoC를 통해 검증했습니다</Heading>
             </div>
             <div className={styles.storyCopy}>
               <p>
-                각 사례는 사업·운영 요구사항을 기술 요구사항으로 바꾸고, 가능한 대안을 비교한 뒤
-                선택한 구조와 포기한 조건을 함께 기록합니다.
+               프라이빗 클라우드 IaaS 환경에 VPC 요구사항을 대응하기 위한 아키텍처 설계
               </p>
               <p>
-                시스템 컨텍스트, 배포 구조, 데이터 흐름을 Mermaid로 표현해 설계 변경 이력을 관리하고,
-                검증 결과와 미검증 항목을 분리해 아키텍처의 신뢰도를 높였습니다.
+                패킷 플로우, SG Rule, 네트워크 처리 과정을 시뮬레이션하여 다양한 환경에서 PoC 진행
               </p>
             </div>
           </div>

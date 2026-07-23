@@ -7,7 +7,7 @@ description: OpenStack Native VPC의 논리 및 배포 구조
 
 1. **OpenStack Project를 VPC로 정의**
 2. 사용자 네트워크는 **ML2/OVN 기반 Geneve Overlay**로 제공. 
-3. East-West와 Floating IP는 Compute Node에서 분산 처리(DVR), 
+3. East-West와 Floating IP는 Compute Node에서 분산 처리(DVR)
 4. 일반 SNAT은 전용 Gateway Node로 분리
 
 ## 시스템 컨텍스트
