@@ -7,8 +7,8 @@ const isUserPage = projectName.endsWith('.github.io');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'OpenStack Native VPC Architecture',
-  tagline: '프라이빗 클라우드 VPC를 설계하고 검증한 아키텍처 사례',
+  title: 'Private Cloud Architecture Portfolio',
+  tagline: '프라이빗 클라우드 아키텍처 설계부터 상품화까지',
   favicon: 'img/favicon.svg',
   url: `https://${organizationName}.github.io`,
   baseUrl: isUserPage ? '/' : `/${projectName}/`,
@@ -50,17 +50,17 @@ const config = {
     metadata: [
       {
         name: 'keywords',
-        content: 'OpenStack, VPC, OVN, Geneve, DVR, cloud architecture',
+        content: 'OpenStack, VPC, HCI, OVN, Ceph, private cloud architecture',
       },
     ],
     navbar: {
-      title: 'OpenStack VPC Portfolio',
+      title: 'Private Cloud Portfolio',
       items: [
         {
           type: 'docSidebar',
           sidebarId: 'architectureSidebar',
           position: 'left',
-          label: 'Architecture',
+          label: 'Portfolio',
         },
         {to: '/blog', label: 'Notes', position: 'left'},
         {
@@ -74,11 +74,11 @@ const config = {
       style: 'dark',
       links: [
         {
-          title: 'Case Study',
+          title: 'Case Studies',
           items: [
-            {label: '프로젝트 개요', to: '/docs/intro'},
-            {label: '최종 아키텍처', to: '/docs/architecture-overview'},
-            {label: '검증 결과', to: '/docs/validation'},
+            {label: 'VPC 아키텍처 설계', to: '/docs/intro'},
+            {label: 'HCI 상품 설계', to: '/docs/hci/intro'},
+            {label: 'HCI 최종 아키텍처', to: '/docs/hci/architecture-overview'},
           ],
         },
         {
@@ -89,7 +89,7 @@ const config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} OpenStack VPC Portfolio.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Private Cloud Architecture Portfolio.`,
     },
     prism: {
       theme: prismThemes.github,
