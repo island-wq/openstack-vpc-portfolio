@@ -111,12 +111,34 @@ xychart-beta
 
 ### 다중 VM TCP 성능 비교
 
+#### Tenant Network
+
 ```mermaid
 xychart-beta
-  title "10개 VM TCP 처리량"
-  x-axis ["L2 동일", "L2 원격", "L3 동일", "L3 원격", "FIP Down", "FIP Up", "SNAT Up", "Provider 동일", "Provider 원격", "Provider N-S Down", "Provider N-S Up"]
+  title "Tenant Network·10개 VM"
+  x-axis ["L2 동일 Node", "L2 다른 Node", "L3 동일 Node", "L3 다른 Node"]
   y-axis "처리량 (Gbps)" 0 --> 45
-  bar [42.7, 8.9, 42.7, 9.0, 18.4, 15.7, 9.3, 42.9, 18.7, 18.7, 18.6]
+  bar [42.7, 8.9, 42.7, 9.0]
+```
+
+#### Floating IP·SNAT
+
+```mermaid
+xychart-beta
+  title "외부 연결·10개 VM"
+  x-axis ["FIP Download", "FIP Upload", "SNAT Upload"]
+  y-axis "처리량 (Gbps)" 0 --> 20
+  bar [18.4, 15.7, 9.3]
+```
+
+#### Provider Network
+
+```mermaid
+xychart-beta
+  title "Provider Network·10개 VM"
+  x-axis ["E-W 동일 Node", "E-W 다른 Node", "N-S Download", "N-S Upload"]
+  y-axis "처리량 (Gbps)" 0 --> 45
+  bar [42.9, 18.7, 18.7, 18.6]
 ```
 
 ### 분석

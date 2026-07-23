@@ -5,10 +5,10 @@ import Heading from '@theme/Heading';
 import styles from './index.module.css';
 
 const highlights = [
-  ['4 Cases', 'VPC·HCI·PoC·기능 테스트'],
-  ['OpenStack', 'OVN·Geneve·Ceph 기반 기술 설계'],
-  ['End-to-End', '요구사항부터 검증·로드맵·PoC까지'],
-  ['Migration', 'VMware to KVM 마이그레이션'],
+  ['4 Case Studies', 'VPC·HCI·PoC·기능 검증'],
+  ['Architecture', 'OVN·Geneve·Ceph 기반 설계'],
+  ['Validation', '기능·성능·가용성 검증'],
+  ['Migration', 'VMware에서 KVM으로 전환'],
 ];
 
 const projects = [
@@ -22,7 +22,7 @@ const projects = [
   {
     number: '02',
     title: 'Small HCI Product Design',
-    description: '대형 랙 상품을 보 완하기 위한 소용량 가상화 제품 HCI 상품 설계',
+    description: '대형 랙 상품과 소형 가상화 제품 사이의 공백을 보완하는 OpenStack HCI 상품 설계.',
     tags: ['HCI', 'Ceph', 'PXE', '10GbE'],
     link: '/docs/hci/intro',
   },
@@ -46,29 +46,29 @@ function Home() {
   return (
     <Layout
       title="Private Cloud Architecture Portfolio"
-      description="OpenStack 기반 VPC 아키텍처와 HCI 상품 설계 포트폴리오"
+      description="OpenStack 기반 VPC·HCI·PoC·마이그레이션 아키텍처 포트폴리오"
     >
       <header className={styles.hero}>
         <div className="container">
           <p className={styles.eyebrow}>PRIVATE CLOUD ARCHITECTURE PORTFOLIO</p>
           <Heading as="h1" className={styles.heroTitle}>
-            프라이빗 클라우드에 VPC
+            OpenStack으로 설계하고,
             <br />
-            구성이 가능하다고?
+            PoC로 검증한 프라이빗 클라우드
           </Heading>
           <p className={styles.heroSubtitle}>
-            OpenStack 기반 VPC 설계부터 소규모 HCI 상품화까지,
-            문제 정의·설계 결정·트래픽 흐름·검증 과정을 기록한 포트폴리오입니다.
+            VPC와 HCI 상품 설계부터 VMware 마이그레이션, 기능·성능·고가용성 검증까지
+            문제를 정의하고 기술적 판단을 증명한 과정을 기록했습니다.
           </p>
           <div className={styles.heroButtons}>
             <Link className="button button--primary button--lg" to="/docs/vpc/intro">
-              VPC 아키텍처 설계 및 구현
+              VPC 아키텍처
             </Link>
             <Link className="button button--secondary button--lg" to="/docs/hci/intro">
-              HCI 설계 및 구현
+              HCI 상품 설계
             </Link>
             <Link className="button button--secondary button--lg" to="/docs/poc/intro">
-              PoC 설계 및 검증
+              PoC 설계·검증
             </Link>
             <Link className="button button--secondary button--lg" to="/docs/test-cases/intro">
               테스트 케이스
@@ -112,16 +112,32 @@ function Home() {
           <div className={clsx('container', styles.storyGrid)}>
             <div>
               <p className={styles.sectionLabel}>HOW I WORK</p>
-              <Heading as="h2">고객 요구사항을 만족하기 위한 설계를 정의하고 다양한 PoC를 통해 검증하여 완성도 높은 상품을 구현하기 위해 노력했습니다</Heading>
+              <Heading as="h2">
+                요구사항을 설계로 바꾸고,
+                <br />
+                검증 결과로 완성도를 높입니다
+              </Heading>
             </div>
-            <div className={styles.storyCopy}>
-              <p>
-               프라이빗 클라우드 IaaS 환경에 VPC 요구사항을 대응하기 위한 아키텍처 설계
-              </p>
-              <p>
-                패킷 플로우, SG Rule, 네트워크 처리 과정을 시뮬레이션하여 다양한 환경에서 PoC 진행
-              </p>
-            </div>
+            <ol className={styles.storyCopy}>
+              <li>
+                <div>
+                  <strong>요구사항 구조화</strong>
+                  <p>고객의 기능·성능·운영 요구를 설계 조건과 검증 항목으로 구체화</p>
+                </div>
+              </li>
+              <li>
+                <div>
+                  <strong>아키텍처 설계</strong>
+                  <p>패킷 흐름, 보안 정책, 장애 경로를 고려한 Private Cloud 구조 정의</p>
+                </div>
+              </li>
+              <li>
+                <div>
+                  <strong>PoC 기반 검증</strong>
+                  <p>기능·네트워크·스토리지·고가용성 시험을 통한 설계 적합성 확인</p>
+                </div>
+              </li>
+            </ol>
           </div>
         </section>
       </main>

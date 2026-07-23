@@ -155,21 +155,57 @@
 
 .storyGrid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 5rem;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 6rem;
   align-items: start;
 }
 
 .storyGrid h2 {
-  font-size: clamp(2rem, 4vw, 3.2rem);
-  line-height: 1.2;
+  max-width: 620px;
+  margin-bottom: 0;
+  font-size: clamp(2rem, 3.4vw, 3rem);
+  line-height: 1.18;
   letter-spacing: -0.04em;
 }
 
 .storyCopy {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  gap: 1.5rem;
+  counter-reset: workflow;
+  list-style: none;
   color: var(--ifm-color-emphasis-700);
-  font-size: 1.08rem;
-  line-height: 1.9;
+}
+
+.storyCopy li {
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr);
+  padding-bottom: 1.5rem;
+  gap: 1rem;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  counter-increment: workflow;
+}
+
+.storyCopy li::before {
+  color: var(--ifm-color-primary);
+  content: '0' counter(workflow);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+
+.storyCopy strong {
+  display: block;
+  margin-bottom: 0.45rem;
+  color: var(--ifm-heading-color);
+  font-size: 1.15rem;
+}
+
+.storyCopy p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.75;
 }
 
 @media (max-width: 996px) {
