@@ -72,4 +72,3 @@ description: 기능, 성능, 가용성 검증 시나리오와 결과
 
 Gateway Chassis 우선순위에 따른 Failover와 Failback은 정상 동작 가능 확인
 다만 전환 과정에서 패킷 손실은 감안할 필요 있음
-

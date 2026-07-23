@@ -50,7 +50,7 @@ const config = {
     metadata: [
       {
         name: 'keywords',
-        content: 'OpenStack, VPC, HCI, OVN, Ceph, private cloud architecture',
+        content: 'OpenStack, VPC, HCI, PoC, OVN, Ceph, private cloud architecture',
       },
     ],
     navbar: {
@@ -76,9 +76,10 @@ const config = {
         {
           title: 'Case Studies',
           items: [
-            {label: 'VPC 아키텍처 설계', to: '/docs/intro'},
+            {label: 'VPC 아키텍처 설계', to: '/docs/vpc/intro'},
             {label: 'HCI 상품 설계', to: '/docs/hci/intro'},
             {label: 'HCI 최종 아키텍처', to: '/docs/hci/architecture-overview'},
+            {label: 'Private Cloud PoC', to: '/docs/poc/intro'},
           ],
         },
         {

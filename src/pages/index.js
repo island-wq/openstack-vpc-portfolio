@@ -5,7 +5,7 @@ import Heading from '@theme/Heading';
 import styles from './index.module.css';
 
 const highlights = [
-  ['2 Cases', 'VPC 아키텍처와 HCI 상품 설계'],
+  ['3 Cases', 'VPC·HCI·Private Cloud PoC'],
   ['OpenStack', 'OVN·Geneve·Ceph 기반 기술 설계'],
   ['End-to-End', '요구사항부터 검증·로드맵까지'],
   ['Mermaid', '수정 가능한 아키텍처 다이어그램'],
@@ -17,7 +17,7 @@ const projects = [
     title: 'OpenStack Native VPC',
     description: 'Private Cloud를 위한 VPC를 ML2/OVN, Geneve, DVR 기반 구조로 재설계하고 성능과 가용성을 검증.',
     tags: ['VPC', 'OVN', 'DVR', 'HA'],
-    link: '/docs/intro',
+    link: '/docs/vpc/intro',
   },
   {
     number: '02',
@@ -25,6 +25,13 @@ const projects = [
     description: '대형 랙 상품을 보 완하기 위한 소용량 가상화 제품 HCI 상품 설계',
     tags: ['HCI', 'Ceph', 'PXE', '10GbE'],
     link: '/docs/hci/intro',
+  },
+  {
+    number: '03',
+    title: 'Private Cloud PoC',
+    description: '서로 다른 고객 요구를 이관형과 플랫폼 검증형으로 구분하고, 아키텍처·시험 시나리오·판정 기준을 설계.',
+    tags: ['PoC', 'Migration', 'DVR', 'Cinder'],
+    link: '/docs/poc/intro',
   },
 ];
 
@@ -47,11 +54,14 @@ function Home() {
             문제 정의·설계 결정·트래픽 흐름·검증 과정을 기록한 포트폴리오입니다.
           </p>
           <div className={styles.heroButtons}>
-            <Link className="button button--primary button--lg" to="/docs/intro">
+            <Link className="button button--primary button--lg" to="/docs/vpc/intro">
               VPC 아키텍처 설계 및 구현
             </Link>
             <Link className="button button--secondary button--lg" to="/docs/hci/intro">
               HCI 설계 및 구현
+            </Link>
+            <Link className="button button--secondary button--lg" to="/docs/poc/intro">
+              PoC 설계 및 검증
             </Link>
           </div>
         </div>
