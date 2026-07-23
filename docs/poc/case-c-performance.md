@@ -38,6 +38,16 @@ flowchart LR
 | Cinder | 20 | 18 | 2 |
 | 합계 | 70 | 52 | 18 |
 
+### 컴포넌트 완료율
+
+```mermaid
+xychart-beta
+  title "컴포넌트별 시험 완료율"
+  x-axis ["Nova", "Neutron", "Manila", "Logging", "Glance", "Cinder"]
+  y-axis "완료율 (%)" 0 --> 100
+  bar [60, 100, 77.8, 0, 100, 90]
+```
+
 - 전체 70개 중 52개 완료
 - 완료율 약 74.3%
 - Neutron·Glance 전 항목 완료
@@ -99,6 +109,16 @@ flowchart LR
 | Provider N-S·Download | 5.4Gbps | 18.7Gbps | 외부 Simulator |
 | Provider N-S·Upload | 9.3Gbps | 18.6Gbps | 외부 Simulator |
 
+### 다중 VM TCP 성능 비교
+
+```mermaid
+xychart-beta
+  title "10개 VM TCP 처리량"
+  x-axis ["L2 동일", "L2 원격", "L3 동일", "L3 원격", "FIP Down", "FIP Up", "SNAT Up", "Provider 동일", "Provider 원격", "Provider N-S Down", "Provider N-S Up"]
+  y-axis "처리량 (Gbps)" 0 --> 45
+  bar [42.7, 8.9, 42.7, 9.0, 18.4, 15.7, 9.3, 42.9, 18.7, 18.7, 18.6]
+```
+
 ### 분석
 
 - 동일 Node 다중 VM의 TCP 집계 성능 최대 약 42.9Gbps
@@ -146,6 +166,16 @@ flowchart LR
 - 다중 VM 128K Sequential Read 최대 약 2,447MB/s
 - 다중 VM 병렬 처리 시 집계 성능 증가
 - 일부 Read Queue 구간의 응답시간 증가
+
+### 4K Random IOPS 비교
+
+```mermaid
+xychart-beta
+  title "4K Random 최대 IOPS"
+  x-axis ["iSCSI Read", "iSCSI Write", "NFS Read", "NFS Write"]
+  y-axis "IOPS (천)" 0 --> 120
+  bar [119, 71, 70.5, 82.3]
+```
 
 ### VM·Bare Metal 비교
 
