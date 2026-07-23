@@ -50,6 +50,14 @@ const sidebars = {
         'poc/glossary',
       ],
     },
+    {
+      type: 'category',
+      label: '4. 테스트 케이스 항목',
+      link: {type: 'doc', id: 'test-cases/intro'},
+      items: [
+        'test-cases/ovn-octavia',
+      ],
+    },
   ],
 };
 

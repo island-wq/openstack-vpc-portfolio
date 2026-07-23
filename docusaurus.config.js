@@ -80,6 +80,7 @@ const config = {
             {label: 'HCI 상품 설계', to: '/docs/hci/intro'},
             {label: 'HCI 최종 아키텍처', to: '/docs/hci/architecture-overview'},
             {label: 'Private Cloud PoC', to: '/docs/poc/intro'},
+            {label: '테스트 케이스', to: '/docs/test-cases/intro'},
           ],
         },
         {

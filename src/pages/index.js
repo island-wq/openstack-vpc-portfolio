@@ -5,7 +5,7 @@ import Heading from '@theme/Heading';
 import styles from './index.module.css';
 
 const highlights = [
-  ['3 Cases', 'VPC·HCI·Private Cloud PoC'],
+  ['4 Cases', 'VPC·HCI·PoC·기능 테스트'],
   ['OpenStack', 'OVN·Geneve·Ceph 기반 기술 설계'],
   ['End-to-End', '요구사항부터 검증·로드맵·PoC까지'],
   ['Migration', 'VMware to KVM 마이그레이션'],
@@ -32,6 +32,13 @@ const projects = [
     description: '서로 다른 고객 요구를 이관형과 플랫폼 검증형으로 구분하고, 아키텍처·시험 시나리오·판정 기준을 설계.',
     tags: ['PoC', 'Migration', 'DVR', 'Cinder'],
     link: '/docs/poc/intro',
+  },
+  {
+    number: '04',
+    title: 'OpenStack Test Cases',
+    description: 'OpenStack 기능 단위 설치·동작·제약사항을 검증하고 운영 적용 조건을 정리.',
+    tags: ['Octavia', 'OVN', 'L4', 'Load Balancer'],
+    link: '/docs/test-cases/intro',
   },
 ];
 
@@ -62,6 +69,9 @@ function Home() {
             </Link>
             <Link className="button button--secondary button--lg" to="/docs/poc/intro">
               PoC 설계 및 검증
+            </Link>
+            <Link className="button button--secondary button--lg" to="/docs/test-cases/intro">
+              테스트 케이스
             </Link>
           </div>
         </div>
