@@ -3,15 +3,14 @@ const {themes: prismThemes} = require('prism-react-renderer');
 const repository =
   process.env.GITHUB_REPOSITORY || 'island-wq/openstack-vpc-portfolio';
 const [organizationName, projectName] = repository.split('/');
-const isUserPage = projectName.endsWith('.github.io');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'Private Cloud Architecture Portfolio',
   tagline: '프라이빗 클라우드 아키텍처 설계부터 상품화까지',
   favicon: 'img/favicon.svg',
-  url: `https://${organizationName}.github.io`,
-  baseUrl: isUserPage ? '/' : `/${projectName}/`,
+  url: 'https://portfolio.my-assistant.co.kr',
+  baseUrl: '/',
   organizationName,
   projectName,
   onBrokenLinks: 'throw',
