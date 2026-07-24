@@ -52,7 +52,7 @@ const sidebars = {
     },
     {
       type: 'category',
-      label: '4. 테스트 케이스 항목',
+      label: '테스트 케이스',
       link: {type: 'doc', id: 'test-cases/intro'},
       items: [
         'test-cases/ovn-octavia',
@@ -70,7 +70,7 @@ const sidebars = {
         'test-cases/cinder-multibackend-weighting',
         {
           type: 'category',
-          label: '7. LVM iSCSI Cinder Backend',
+          label: '4.7 LVM iSCSI Cinder Backend',
           link: {type: 'doc', id: 'test-cases/lvm-iscsi-cinder-backend'},
           items: [
             'test-cases/lvm-iscsi-deploy-config',

@@ -1,85 +1,118 @@
 ---
-title: 7. LVM iSCSI Cinder Backend
-description: 전용 Storage Node의 LVM·LIO iSCSI Cinder Backend 설치 및 MultiBackend 가중치 연동
+title: 4.7 LVM iSCSI Cinder Backend
+description: 전용 Storage Node의 LVM·LIO iSCSI Cinder Backend 구성과 Multipath 검증
 ---
 
-# 7. LVM iSCSI Cinder Backend
+# 4.7 LVM iSCSI Cinder Backend
 
-## 목적
+## 검증 목적
 
-- 전용 Storage Node 기반 Cinder LVM Backend 구축
-- LIO 기반 iSCSI Target·Multipath 경로 구성
-- NFS Backend와 MultiBackend 동시 운영
-- Goodness 가중치 기반 LVM Primary 선택 적용
+- 전용 Storage Node 기반 Cinder LVM Backend 구성
+- LIO 기반 iSCSI Target 자동 생성·정리 구조 확인
+- Primary·Secondary Portal 기반 Multipath 경로 적용
+- Volume 생성·연결·해제·삭제 전체 생명주기 검증
+- NFS·LVM MultiBackend의 독립 운영 구조 적용
+
+## 핵심 결과
+
+| 검증 항목 | 적용 내용 | 판정 기준 |
+|---|---|---|
+| Backend | LVM `cinder-vol`·LIO `lioadm` | `cinder-volume` Service `up` |
+| Target | Backstore·Target·LUN·ACL 자동 구성 | `targetcli ls` Object 확인 |
+| Network | iSCSI Portal 2개·TCP 3260 | 동일 IQN·LUN의 이중 Session 확인 |
+| Compute | `open-iscsi`·`multipathd` | `/dev/mapper/mpathX` 생성 |
+| Instance | Nova Volume Attach | VM 내부 Block Device 인식 |
+| MultiBackend | `LVM_LIO_MP`·`NFS_VOLUME1` 분리 | Volume Type별 Backend 선택 |
 
 ## 원본 구성도
 
 ![OpenStack Cluster와 LVM iSCSI·NFS MultiBackend 구성도](/img/test-cases/lvm-iscsi-cinder-backend/architecture.png)
 
-*OpenStack Cluster·전용 LVM Storage Node·NFS Backend 구성*
+*OpenStack Cluster·LVM Storage Node·NFS Backend 구성*
 
-## 논리 구성
+![Management·External·Multipath Network 원본 구성도](/img/test-cases/lvm-iscsi-cinder-backend/source-topology.png)
+
+*첨부 원본의 Management·External·iSCSI 이중 경로 구성*
+
+![LIO Target·LUN·ACL 원본 구성도](/img/test-cases/lvm-iscsi-cinder-backend/lio-target-map.png)
+
+*첨부 원본의 LIO Target Object와 Initiator 연결 구조*
+
+## 논리 아키텍처
 
 ```mermaid
 flowchart LR
   subgraph control["OpenStack Control Plane"]
     api["Cinder API"]
     scheduler["Cinder Scheduler"]
-    type["Volume Type<br/>auto-balancing"]
+    nova["Nova API"]
   end
 
-  subgraph lvm["LVM iSCSI Backend"]
-    volume["cinder-volume"]
+  subgraph storage["전용 Storage Node"]
+    volume["cinder-volume<br/>LVMVolumeDriver"]
     vg["VG: cinder-vol"]
-    thin["Thin Pool"]
-    lio["LIO Target<br/>lioadm·TCP 3260"]
+    lv["LV: volume-UUID"]
+    lio["LIO<br/>Backstore·Target·LUN·ACL"]
+    p1["Portal 1<br/>TCP 3260"]
+    p2["Portal 2<br/>TCP 3260"]
   end
 
-  subgraph nfs["NFS Backend"]
-    nfsVolume["cinder-volume"]
-    share["NFS Share"]
+  subgraph compute["Compute Node"]
+    brick["os-brick·open-iscsi"]
+    multipath["multipathd<br/>/dev/mapper/mpathX"]
+    vm["Instance<br/>/dev/vdb"]
   end
 
-  initiator["Compute Node<br/>iSCSI Initiator·Multipath"]
-
-  api --> scheduler
-  type --> scheduler
-  scheduler --> volume
-  scheduler --> nfsVolume
-  volume --> vg --> thin --> lio --> initiator
-  nfsVolume --> share
+  api --> scheduler --> volume
+  nova --> brick
+  volume --> vg --> lv --> lio
+  lio --> p1 --> brick
+  lio --> p2 --> brick
+  brick --> multipath --> vm
 ```
 
-- Cinder API·Scheduler의 Control Plane 역할 적용
-- 전용 Storage Node의 `cinder-volume`·LVM·LIO 역할 적용
-- Compute Node의 iSCSI Initiator·Multipath 역할 적용
-- NFS Backend의 Secondary Storage 역할 적용
+### 구성요소 역할
 
-## 설치 순서
+| 구성요소 | 역할 | 생성 시점 |
+|---|---|---|
+| LVM PV·VG | 물리 Disk와 Cinder 저장공간 Pool 구성 | Backend 준비 |
+| Logical Volume | Cinder Volume별 Block Device 제공 | Volume 생성 |
+| LIO Backstore | Logical Volume을 Target Object로 등록 | Volume 연결 |
+| Target·TPG | IQN과 Portal Group 제공 | Volume 연결 |
+| LUN | Backstore의 논리 번호 Mapping | Volume 연결 |
+| ACL | Compute Initiator IQN 접근 허용 | Volume 연결 |
+| Multipath Device | 동일 LUN의 복수 경로 통합 | Compute Login |
+
+## 구축 흐름
 
 ```mermaid
 flowchart TD
-  check["1. Disk·Network 사전 점검"]
-  lvm["2. PV·VG·Thin Pool 구성"]
-  lio["3. LIO·iSCSI Package 설치"]
-  inventory["4. OSA Inventory 역할 분리"]
-  backend["5. Cinder Backend 설정"]
-  deploy["6. os-cinder-install 실행"]
-  type["7. Volume Type·가중치 연결"]
-  verify["8. 생성·Export·Attach 검증"]
-
-  check --> lvm --> lio --> inventory --> backend --> deploy --> type --> verify
+  A["1. Disk·Network 사전 점검"] --> B["2. LVM PV·VG 구성"]
+  B --> C["3. LIO·iSCSI Package 구성"]
+  C --> D["4. OSA Inventory 역할 분리"]
+  D --> E["5. Cinder Backend 정의"]
+  E --> F["6. Cinder 배포"]
+  F --> G["7. Volume Type 생성"]
+  G --> H["8. 생성·연결·Multipath 검증"]
 ```
 
 ## 1. 사전 점검
 
-- 전용 Storage Node의 Data Disk 식별 필요
-- Management·iSCSI Primary·Secondary Network 연결 확인 필요
-- TCP 3260 Port의 접근 정책 확인 필요
+- Storage Data Disk와 OS Disk의 명확한 분리 필요
+- Management·Storage·iSCSI Primary·Secondary Network 연결 필요
+- Storage·Compute Node 간 TCP 3260 허용 필요
 - 기존 Partition·Filesystem·LVM Signature 확인 필요
-- Compute Node의 iSCSI Initiator IQN 확인 필요
+- Compute Node의 Initiator IQN 확인 필요
 
-```bash title="Disk·Network 확인"
+:::danger Disk 초기화 주의
+
+`pvcreate` 대상 장치의 기존 데이터·Mount·운영 사용 여부 확인 필요.
+
+:::
+
+**실행 명령 — Disk·Network 상태 확인**
+
+```bash title="Storage Node 사전 점검"
 lsblk -f
 pvs
 vgs
@@ -88,57 +121,41 @@ ip -br address
 ss -lntp | grep 3260
 ```
 
-:::danger 대상 Disk 데이터 삭제 주의
+**실행 명령 — Compute Initiator 확인**
 
-PV 생성 전 장치명·기존 데이터·운영 사용 여부 확인 필요.
+```bash title="Compute Node Initiator IQN 확인"
+cat /etc/iscsi/initiatorname.iscsi
+```
 
-:::
+## 2. LVM Backend 구성
 
-## 2. LVM 구성
+**실행 명령 — 필수 Package 설치**
 
-### PV·VG 생성
-
-```bash title="Package 설치"
-apt-get update
-apt-get install -y \
+```bash title="LVM Package 설치"
+sudo apt-get update
+sudo apt-get install -y \
   lvm2 \
   thin-provisioning-tools \
   parted
 ```
 
-```bash title="PV·VG 생성 예시"
-pvcreate /dev/vdb /dev/vdc /dev/vdd
-vgcreate cinder-vol /dev/vdb /dev/vdc /dev/vdd
+**실행 명령 — PV·VG 생성**
+
+```bash title="Cinder Volume Group 생성"
+sudo pvcreate /dev/vdb /dev/vdc /dev/vdd
+sudo vgcreate cinder-vol /dev/vdb /dev/vdc /dev/vdd
 ```
 
-- Data Disk별 Physical Volume 생성 적용
-- Cinder 전용 Volume Group `cinder-vol` 구성 적용
-- OS Disk와 Cinder Data Disk의 분리 필요
+- Cinder 전용 Volume Group `cinder-vol` 적용
+- 환경별 실제 Data Disk 장치명 치환 필요
+- VG Free Space와 Cinder Capacity Report 정합성 확인 필요
 
-### Thin Pool 구성
+**실행 명령 — LVM 상태 검증**
 
-```bash title="Thin Pool 생성 예시"
-lvcreate \
-  --type thin-pool \
-  --name cinder-vol-pool \
-  --extents 95%VG \
-  cinder-vol
-```
-
-- Cinder Volume의 Thin Provisioning 적용
-- Metadata 여유공간과 Volume Group Free Space 확보 필요
-- 실제 Cinder Driver의 Thin Pool 생성·관리 방식 확인 필요
-
-```bash title="LVM 상태 확인"
-pvs
-vgs
-lvs -a -o +seg_monitor,data_percent,metadata_percent
-```
-
-```text title="확인 기준"
-PV  : /dev/vdb, /dev/vdc, /dev/vdd
-VG  : cinder-vol
-Pool: cinder-vol-pool
+```bash title="PV·VG·LV 확인"
+sudo pvs
+sudo vgs
+sudo lvs -a -o +seg_monitor,data_percent,metadata_percent
 ```
 
 ## 3. LIO iSCSI 구성
@@ -150,279 +167,288 @@ Pool: cinder-vol-pool
 | 처리 위치 | User Space | Kernel Space |
 | 관리 도구 | `tgtadm` | `targetcli` |
 | Cinder Helper | `tgtadm` | `lioadm` |
-| Linux 표준 | Legacy | Kernel Mainline |
-| 적용 목적 | 단순 Target | 고성능·다중 Protocol |
+| 적용 기준 | Legacy Target | Linux Kernel 표준 Target |
 
 - Kernel 기반 LIO Target 적용
-- Cinder LVM Driver의 `target_helper=lioadm` 적용
-- TGT Package·Service와 LIO의 동시 사용 방지 필요
+- Cinder LVM Driver의 `target_helper: lioadm` 적용
+- TGT Service와 LIO의 Port 중복 사용 방지 필요
 
-### LIO Package 설치
+**실행 명령 — LIO Package 설치**
 
-```bash
-apt-get install -y \
+```bash title="LIO·iSCSI Package 설치"
+sudo apt-get install -y \
   targetcli-fb \
   python3-rtslib-fb \
-  open-iscsi
+  open-iscsi \
+  multipath-tools
 ```
 
-```bash title="Kernel Target·Service 확인"
-modprobe target_core_mod
-modprobe iscsi_target_mod
-targetcli ls
-systemctl status rtslib-fb-targetctl
+**실행 명령 — Kernel·Target 상태 확인**
+
+```bash title="LIO 상태 확인"
+sudo modprobe target_core_mod
+sudo modprobe iscsi_target_mod
+sudo targetcli ls
+sudo systemctl status rtslib-fb-targetctl
 ```
 
-- Kernel ConfigFS Mount 확인 필요
-- TCP 3260 Port 충돌 부재 확인 필요
-- `targetcli` 기반 기존 Target·Portal 잔존 여부 확인 필요
+## 4. OpenStack-Ansible 배포 설정
 
-## 4. OSA Inventory 구성
+중복된 Inventory·Backend YAML은 별도 설치 문서로 통합.
 
-```yaml title="/etc/openstack_deploy/openstack_user_config.yml"
-_control_nodes: &control_nodes
-  control01:
-    ip: <management-ip-1>
-  control02:
-    ip: <management-ip-2>
-  control03:
-    ip: <management-ip-3>
+- Control·Compute 혼합 Node 3대와 Storage 전용 Node 1대 역할 분리
+- `storage_hosts`에 전용 Storage Node 배치
+- `NFS_VOLUME1`·`LVM_LIO_MP` 독립 Backend 적용
+- Primary·Secondary iSCSI Portal 목록 적용
+- Nova `volume_use_multipath: true` 적용
+- 실제 IP·비밀번호·내부 Endpoint의 공개 문서 제외
 
-_storage_nodes: &storage_nodes
-  storage01:
-    ip: <storage-management-ip>
+[Deploy Config 상세 설치 가이드](./lvm-iscsi-deploy-config.md)
 
-compute_hosts:
-  <<: *control_nodes
+### 핵심 Backend 항목
 
-storage-infra_hosts:
-  <<: *control_nodes
-
-storage_hosts:
-  <<: *storage_nodes
-
-image_hosts:
-  <<: *control_nodes
-```
-
-- Cinder API·Scheduler의 Control Node 배치 적용
-- LVM `cinder-volume`의 전용 Storage Node 배치 적용
-- LVM Device가 없는 Control Node의 LVM Backend 실행 방지 필요
-- Inventory 변경 후 Dynamic Inventory 재생성 필요
-
-## 5. Cinder Backend 설정
-
-```yaml title="/etc/openstack_deploy/user_variables.yml"
+```yaml title="LVM·LIO Backend 핵심 설정"
 cinder_backends:
-  nfs_volume:
-    volume_backend_name: mixed-storage
-    volume_driver: cinder.volume.drivers.nfs.NfsDriver
-    nfs_shares_config: /etc/cinder/nfs_shares
-    goodness_function: "50"
-
   lvm_lio_mp:
-    volume_backend_name: mixed-storage
+    volume_backend_name: LVM_LIO_MP
     volume_driver: cinder.volume.drivers.lvm.LVMVolumeDriver
     volume_group: cinder-vol
-    lvm_type: thin
-
     target_helper: lioadm
     target_protocol: iscsi
     target_ip_address: <iscsi-primary-ip>
-    target_secondary_ip_addresses: <iscsi-secondary-ip>
+    target_secondary_ip_addresses:
+      - <iscsi-secondary-ip>
     target_port: 3260
-
-    goodness_function: "100"
-
-cinder_cinder_conf_overrides:
-  DEFAULT:
-    scheduler_default_weighers: GoodnessWeigher
-    default_volume_type: auto-balancing
-
-cinder_enabled_backends:
-  - nfs_volume
-  - lvm_lio_mp
-
-cinder_target_helper_mapping:
-  Debian: lioadm
-  RedHat: lioadm
-
-cinder_target_helper: lioadm
-cinder_target_protocol: iscsi
 ```
 
-- LVM·NFS의 동일 `volume_backend_name` 적용
-- LVM Primary Goodness 100 적용
-- NFS Secondary Goodness 50 적용
-- `target_secondary_ip_addresses`의 Scalar 형식 적용 필요
-- Python List 문자열 형태의 `cinder.conf` 렌더링 방지 필요
-- 환경별 iSCSI Address·NFS Share 치환 필요
+- `target_secondary_ip_addresses`의 YAML List 형식 적용
+- Storage·Compute Node의 동일 iSCSI Network 접근성 확보 필요
+- Cinder Role·Release별 변수명 지원 여부 사전 확인 필요
 
-### Backend별 독립 Type 사용
-
-- LVM·NFS 강제 선택이 필요한 경우 Backend Name 분리 적용 가능
-- 가중치 자동 선택과 Backend 강제 선택의 Volume Type 분리 필요
-
-```bash title="독립 Volume Type 예시"
-openstack volume type create lvm-iscsi
-openstack volume type set \
-  --property volume_backend_name=LVM_LIO_MP \
-  lvm-iscsi
-```
-
-## 6. Cinder 배포
-
-```bash title="OSA Cinder 배포"
-cd /opt/openstack-ansible/playbooks
-openstack-ansible os-cinder-install.yml
-```
-
-```bash title="Service 상태 확인"
-openstack volume service list
-```
-
-- `cinder-scheduler`의 `enabled·up` 확인
-- `storage01@lvm_lio_mp`의 `enabled·up` 확인
-- NFS `cinder-volume` Service의 `enabled·up` 확인
-- 과거 Inventory 기반 Down Service Record 정리 검토 필요
-
-## 7. Volume Type·가중치 적용
-
-```bash title="가중치 Volume Type 생성"
-openstack volume type create auto-balancing
-
-openstack volume type set \
-  --property volume_backend_name=mixed-storage \
-  auto-balancing
-```
+## 5. Volume 생명주기
 
 ```mermaid
-flowchart TD
-  request["auto-balancing Volume 요청"]
-  filter["Capacity·Service Filter"]
-  lvm{"LVM 사용 가능"}
-  primary["LVM 선택<br/>Goodness 100"]
-  nfs{"NFS 사용 가능"}
-  secondary["NFS 선택<br/>Goodness 50"]
-  failed["No valid backend"]
+sequenceDiagram
+  participant U as User·CLI
+  participant C as Cinder
+  participant L as LVM
+  participant T as LIO
+  participant N as Nova·Compute
 
-  request --> filter --> lvm
-  lvm -- "가능" --> primary
-  lvm -- "불가" --> nfs
-  nfs -- "가능" --> secondary
-  nfs -- "불가" --> failed
+  U->>C: volume create
+  C->>L: lvcreate volume-UUID
+  L-->>C: LV 준비
+  C-->>U: available
+
+  U->>N: server add volume
+  N->>C: initialize_connection
+  C->>T: Backstore·Target·LUN·ACL 생성
+  T-->>N: IQN·Portal·LUN·CHAP 반환
+  N->>T: iSCSI Login·Multipath 구성
+  N-->>U: in-use
+
+  U->>N: server remove volume
+  N->>C: terminate_connection
+  C->>T: ACL·LUN·Backstore 정리
+  N-->>U: available
+
+  U->>C: volume delete
+  C->>L: lvremove volume-UUID
 ```
 
-- LVM 정상 상태의 Primary 선택 적용
-- LVM 용량 부족·Service Down 시 Filter 탈락 적용
-- NFS Secondary Backend 자동 선택 적용
-- 자세한 Scheduler 정책은 [Cinder MultiBackend 가중치](./cinder-multibackend-weighting.md) 참고
+### 단계별 동작
 
-## 8. Volume 생성·Export 검증
+| 단계 | Cinder·LVM 동작 | LIO·Compute 동작 |
+|---|---|---|
+| 생성 | DB Row·Logical Volume 생성 | 개입 최소화 |
+| 연결 | Connector IQN 기반 연결정보 생성 | Backstore·LUN·ACL·Portal 생성 |
+| 사용 | Volume 상태 `in-use` | iSCSI Session·Multipath Device 유지 |
+| 해제 | 연결정보 종료·상태 `available` | Session·ACL·LUN Mapping 정리 |
+| 삭제 | Logical Volume 삭제 | 잔존 Object 정리 |
 
-### Pool·Volume 생성
+## 6. Volume 생성·연결
 
-```bash title="Backend Pool 확인"
-cinder get-pools --detail
+**실행 명령 — Volume Type 생성**
+
+```bash title="LVM Backend 전용 Volume Type"
+openstack volume type create lvm-iscsi
+openstack volume type set lvm-iscsi \
+  --property volume_backend_name=LVM_LIO_MP
 ```
 
-```bash title="LVM 우선 Volume 생성"
+**실행 명령 — Volume 생성**
+
+```bash title="검증 Volume 생성"
 openstack volume create \
-  --type auto-balancing \
-  --size 1 \
+  --size 10 \
+  --type lvm-iscsi \
   lvm-iscsi-test
+
+openstack volume show lvm-iscsi-test
 ```
 
-```bash title="선택 Backend 확인"
-openstack volume show lvm-iscsi-test \
-  -c status \
-  -c type \
-  -c os-vol-host-attr:host
+**실행 명령 — Instance 연결**
+
+```bash title="Instance에 Volume 연결"
+openstack server add volume <SERVER_NAME> lvm-iscsi-test
+openstack volume show lvm-iscsi-test
 ```
 
-- `storage01@lvm_lio_mp#mixed-storage` 형태의 Host 확인
-- Volume Status `available` 확인
-
-### LVM·LIO 상태
-
-```bash title="Storage Node 확인"
-lvs cinder-vol
-targetcli ls
-ss -lntp | grep 3260
-```
-
-- Cinder Volume별 Logical Volume 생성 확인
-- Volume별 LIO Backstore·Target IQN·LUN Mapping 확인
-- Primary·Secondary Portal 등록 확인
-
-## LIO Object 구조
+## 7. LVM·LIO Object 검증
 
 ```mermaid
 flowchart LR
-  lv["LVM Logical Volume<br/>/dev/cinder-vol/volume-*"]
-  backstore["LIO Block Backstore"]
-  iqn["iSCSI Target IQN"]
-  tpg["TPG"]
-  lun["Mapped LUN 0"]
-  portal1["Primary Portal<br/>TCP 3260"]
-  portal2["Secondary Portal<br/>TCP 3260"]
+  lv["LV<br/>/dev/cinder-vol/volume-UUID"]
+  backstore["LIO Backstore"]
+  target["Target IQN·TPG"]
+  lun["LUN Mapping"]
   acl["Initiator ACL"]
-  compute["Compute Node<br/>open-iscsi·multipath"]
+  portals["Primary·Secondary Portal"]
+  compute["Compute iSCSI Session"]
 
-  lv --> backstore --> iqn --> tpg --> lun
-  tpg --> portal1 --> compute
-  tpg --> portal2 --> compute
-  acl --> tpg
+  lv --> backstore --> target --> lun
+  target --> acl
+  target --> portals --> compute
+  acl --> compute
 ```
 
-- Logical Volume 기반 LIO Block Backstore 생성 적용
-- OpenStack Volume UUID 기반 Target IQN 생성 적용
-- TPG의 LUN·Portal·Initiator ACL 구성 적용
-- 다중 Portal 기반 Multipath 연결 가능
+**실행 명령 — Cinder Service·Pool 확인**
 
-## Compute Node 연결 검증
-
-```bash title="iSCSI Discovery·Session 확인"
-iscsiadm -m discovery -t sendtargets -p <iscsi-primary-ip>
-iscsiadm -m session
-multipath -ll
+```bash title="Cinder Backend 확인"
+openstack volume service list
+openstack volume pool list --detail
 ```
 
-- Primary·Secondary Portal Discovery 확인
-- iSCSI Session 연결 확인
-- 동일 LUN의 Multipath Device 통합 확인
-- Nova의 `volume_use_multipath=True` 적용 확인 필요
+**실행 명령 — Logical Volume 확인**
 
-## 주요 장애와 해결
+```bash title="Storage Node LVM 확인"
+sudo lvs -o lv_name,vg_name,lv_size,lv_attr
+```
 
-| 장애 | 원인 | 조치 |
+**실행 명령 — LIO Object 확인**
+
+```bash title="Target·LUN·ACL·Portal 확인"
+sudo targetcli ls
+sudo ss -lntp | grep 3260
+```
+
+- Cinder Volume별 Logical Volume 생성 확인
+- LV와 LIO Backstore의 UUID Mapping 확인
+- Target별 LUN·Initiator ACL 생성 확인
+- 동일 Target의 Primary·Secondary Portal 확인
+
+## 8. Compute Multipath 검증
+
+```mermaid
+flowchart LR
+  target["동일 Target IQN·LUN"]
+  p1["Primary Portal"]
+  p2["Secondary Portal"]
+  sdb["Path A<br/>/dev/sdb"]
+  sdc["Path B<br/>/dev/sdc"]
+  mpath["Multipath Device<br/>/dev/mapper/mpathX"]
+  vm["Instance<br/>/dev/vdb"]
+
+  target --> p1 --> sdb --> mpath
+  target --> p2 --> sdc --> mpath
+  mpath --> vm
+```
+
+**실행 명령 — Service 상태 확인**
+
+```bash title="Compute iSCSI·Multipath Service"
+systemctl status open-iscsi
+systemctl status multipathd
+```
+
+**실행 명령 — iSCSI Session 확인**
+
+```bash title="이중 Portal Session 확인"
+sudo iscsiadm -m session
+sudo iscsiadm -m session -P 3
+```
+
+**실행 명령 — Multipath 확인**
+
+```bash title="Multipath Device·경로 확인"
+sudo multipath -ll
+lsblk
+ls -l /dev/disk/by-path/ | grep iscsi
+```
+
+### 판정 기준
+
+- 동일 Target IQN·LUN의 서로 다른 Portal Session 2개 이상 확인
+- 하나의 WWID 아래 `active ready running` Path 2개 이상 확인
+- `/dev/mapper/mpathX` Device 생성 확인
+- 특정 Path 차단 시 잔여 Path 기반 I/O 유지 확인 필요
+
+## 9. Instance 연결 검증
+
+**실행 명령 — Instance Host 확인**
+
+```bash title="Instance 배치 Compute 확인"
+openstack server show <SERVER_NAME> \
+  -c OS-EXT-SRV-ATTR:host \
+  -f value
+```
+
+**실행 명령 — Hypervisor Block Mapping 확인**
+
+```bash title="Compute Node Libvirt 확인"
+virsh list
+virsh domblklist <INSTANCE_NAME>
+```
+
+**실행 명령 — Guest Disk 확인**
+
+```bash title="Instance 내부 확인"
+lsblk
+sudo fdisk -l /dev/vdb
+```
+
+- Hypervisor의 Multipath Device와 VM Block Device Mapping 확인
+- VM 내부 `/dev/vdb` 정상 인식 확인
+- Read·Write 시험과 연결 해제 후 상태 복구 확인 필요
+
+## 장애 확인
+
+| 증상 | 주요 원인 | 확인·조치 |
 |---|---|---|
-| LVM Service Down | Storage Node의 VG 부재 | `cinder-vol` 생성·활성화 |
-| LVM Backend 후보 제외 | Backend Name 불일치 | `volume_backend_name` 통일 |
-| iSCSI Export 실패 | LIO Package·Kernel Module 부재 | LIO Package 설치·Module 확인 |
-| Portal 생성 실패 | Secondary Address의 List 문자열 렌더링 | Scalar IP 형식 적용 |
-| TCP 3260 충돌 | TGT·LIO 동시 실행 | TGT 중지·LIO 단일화 |
-| Volume Attach 실패 | Initiator·ACL·Network 경로 오류 | IQN·Portal·Firewall 확인 |
-| Multipath 단일 경로 | Secondary Network·Portal 부재 | Portal·Routing·Multipath 설정 확인 |
-| NFS만 선택 | LVM Service Down·Goodness 미보고 | Pool Capability·Service 재확인 |
+| LVM Service `down` | `cinder-vol` 부재·비활성 | `vgs`·`lvs` 확인 후 VG 활성화 |
+| LIO Export 실패 | `lioadm`·Kernel Module 부재 | Package·Module·`targetcli ls` 확인 |
+| TCP 3260 미수신 | Portal IP·Firewall 오류 | `ss`·Routing·보안정책 확인 |
+| 단일 iSCSI Session | Secondary Portal 설정 부재 | Backend List·Network 경로 수정 |
+| Multipath Device 부재 | `multipathd` 비활성·WWID 불일치 | Service·`multipath -ll` 확인 |
+| Instance Attach 실패 | ACL·CHAP·Initiator IQN 불일치 | Cinder Log·LIO ACL 확인 |
+| NFS만 선택 | Volume Type Extra Spec 오류 | `volume_backend_name` 정합성 수정 |
+| Detach 후 Object 잔존 | Session·Cinder DB 불일치 | 사용 여부 확인 후 안전한 정리 필요 |
 
-## 운영 고려사항
+## 검증 체크리스트
 
-- LVM Backend의 Storage Node 단일 장애 위험
-- Production 환경의 Storage Node·Path 이중화 필요
-- Thin Pool Data·Metadata 사용률 임계치 모니터링 필요
-- VG Free Space와 Cinder Capacity Report 정합성 확인 필요
-- iSCSI CHAP·Network 분리·Firewall 정책 적용 필요
-- Target Configuration과 Cinder DB 간 정합성 관리 필요
-- Cinder Upgrade 시 LIO Helper·Package 호환성 검증 필요
+- [ ] `cinder-volume` Service `enabled·up` 확인
+- [ ] `LVM_LIO_MP` Pool 노출 확인
+- [ ] `cinder-vol` 내부 Logical Volume 생성 확인
+- [ ] LIO Backstore·Target·LUN·ACL 생성 확인
+- [ ] Primary·Secondary Portal의 동일 IQN 확인
+- [ ] Compute iSCSI Session 2개 이상 확인
+- [ ] `/dev/mapper/mpathX` 생성 확인
+- [ ] Instance 내부 Block Device 인식 확인
+- [ ] Volume Detach 후 Session·Mapping 정리 확인
+- [ ] Volume Delete 후 LV·LIO Object 정리 확인
 
-## 확인 결과
+## 정리
 
-- 전용 Storage Node의 LVM Thin Pool 구성 확인
-- LIO 기반 iSCSI Target Export 적용
-- Primary·Secondary iSCSI Portal 구성 가능
-- LVM·NFS MultiBackend 동시 운영 적용
-- Goodness 가중치 기반 LVM Primary 선택 적용
-- LVM 불가 시 NFS Secondary 선택 가능
-- Compute Node의 iSCSI·Multipath 경로 검증 필요
-- 운영 적용 전 Storage Node·Network 이중화 필요
+- 전용 Storage Node의 LVM Block Storage 구성 적용
+- Kernel 기반 LIO iSCSI Target 자동화 적용
+- Cinder의 LV·Backstore·LUN·ACL 생명주기 관리 확인
+- Primary·Secondary Portal 기반 Multipath 구성 적용
+- Volume Type 기반 LVM·NFS Backend 분리 적용
+- 단일 Storage Node 장애에 대한 별도 HA 설계 필요
+
+## 참고 자료
+
+- [OpenStack Cinder LVM Volume Driver](https://docs.openstack.org/cinder/latest/configuration/block-storage/drivers/lvm-volume-driver.html)
+- [targetcli-fb](https://github.com/open-iscsi/targetcli-fb)
+- [rtslib-fb](https://github.com/open-iscsi/rtslib-fb)
+- [Debian LIO](https://wiki.debian.org/iSCSI/LIO)
