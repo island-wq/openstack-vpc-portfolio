@@ -56,6 +56,7 @@ const sidebars = {
       link: {type: 'doc', id: 'test-cases/intro'},
       items: [
         'test-cases/ovn-octavia',
+        'test-cases/powerstore-lun-management',
       ],
     },
   ],

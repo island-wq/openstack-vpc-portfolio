@@ -12,4 +12,4 @@ description: OpenStack 기능 단위 설치·동작·제약 검증 사례
 ## 등록 항목
 
 1. [OVN 기반 L4 Octavia](./ovn-octavia.md)
-
+2. [PowerStore LUN 관리 가이드](./powerstore-lun-management.md)
