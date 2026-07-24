@@ -16,3 +16,4 @@ description: OpenStack 기능 단위 설치·동작·제약 검증 사례
 3. [OVN-Gateway 가이드](./ovn-gateway.md)
 4. [Ceph Cluster 가이드](./ceph-cluster.md)
 5. [Security Group Logging 방법](./security-group-logging.md)
+6. [Cinder MultiBackend 가중치](./cinder-multibackend-weighting.md)

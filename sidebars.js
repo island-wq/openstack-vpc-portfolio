@@ -60,6 +60,7 @@ const sidebars = {
         'test-cases/ovn-gateway',
         'test-cases/ceph-cluster',
         'test-cases/security-group-logging',
+        'test-cases/cinder-multibackend-weighting',
       ],
     },
   ],
