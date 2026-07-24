@@ -18,3 +18,4 @@ description: OpenStack 기능 단위 설치·동작·제약 검증 사례
 5. [Security Group Logging 방법](./security-group-logging.md)
 6. [Cinder MultiBackend 가중치](./cinder-multibackend-weighting.md)
 7. [LVM iSCSI Cinder Backend](./lvm-iscsi-cinder-backend.md)
+8. [Cinder MultiBackend](./cinder-multibackend.md)

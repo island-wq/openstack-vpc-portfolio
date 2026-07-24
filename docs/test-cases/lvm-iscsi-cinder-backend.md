@@ -1,9 +1,9 @@
 ---
-title: 4.7 LVM iSCSI Cinder Backend
+title: 7. LVM iSCSI Cinder Backend
 description: 전용 Storage Node의 LVM·LIO iSCSI Cinder Backend 구성과 Multipath 검증
 ---
 
-# 4.7 LVM iSCSI Cinder Backend
+# 7. LVM iSCSI Cinder Backend
 
 ## 검증 목적
 

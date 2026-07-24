@@ -70,12 +70,13 @@ const sidebars = {
         'test-cases/cinder-multibackend-weighting',
         {
           type: 'category',
-          label: '4.7 LVM iSCSI Cinder Backend',
+          label: '7. LVM iSCSI Cinder Backend',
           link: {type: 'doc', id: 'test-cases/lvm-iscsi-cinder-backend'},
           items: [
             'test-cases/lvm-iscsi-deploy-config',
           ],
         },
+        'test-cases/cinder-multibackend',
       ],
     },
   ],
