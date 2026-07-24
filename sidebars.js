@@ -58,7 +58,14 @@ const sidebars = {
         'test-cases/ovn-octavia',
         'test-cases/powerstore-lun-management',
         'test-cases/ovn-gateway',
-        'test-cases/ceph-cluster',
+        {
+          type: 'category',
+          label: '4. Ceph Cluster 가이드',
+          link: {type: 'doc', id: 'test-cases/ceph-cluster'},
+          items: [
+            'test-cases/ceph-deploy-config',
+          ],
+        },
         'test-cases/security-group-logging',
         'test-cases/cinder-multibackend-weighting',
         {
