@@ -1,9 +1,9 @@
 ---
-title: 7. LVM iSCSI Cinder Backend 가중치
+title: 7. LVM iSCSI Cinder Backend
 description: 전용 Storage Node의 LVM·LIO iSCSI Cinder Backend 설치 및 MultiBackend 가중치 연동
 ---
 
-# 7. LVM iSCSI Cinder Backend 가중치
+# 7. LVM iSCSI Cinder Backend
 
 ## 목적
 
@@ -426,4 +426,3 @@ multipath -ll
 - LVM 불가 시 NFS Secondary 선택 가능
 - Compute Node의 iSCSI·Multipath 경로 검증 필요
 - 운영 적용 전 Storage Node·Network 이중화 필요
-
