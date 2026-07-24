@@ -57,6 +57,34 @@ flowchart TB
 - 위험 징후 발견 시 실행 중단과 원인 후보 보고
 - 오류 로그 기반의 수정안 제시와 재실행
 
+## 실제 AI 협업 화면
+
+### 작업 이력 검토와 현황 정리
+
+![OpenStack-Ansible 작업 이력 검토 요청과 AI 기반 현황 정리](/img/ai-assistant/claude-openstack/work-history-review-request.png)
+
+> 이전 작업 내용을 기반으로 대상 서버·노드·배포 상태를 재구성하고 다음 검토 범위를 정리한 대화
+
+- 이전 작업 이력과 대상 환경의 연결
+- 서버·노드 역할과 관리 주소의 문맥화
+- 마지막 작업 단계와 미완료 항목의 재확인
+- 실제 재개 전 최신 상태 조회 필요
+
+### 배포 순서와 Ceph MON 오류 분석
+
+![OpenStack-Ansible 배포 순서 확인과 Ceph monitor_address 오류 분석](/img/ai-assistant/claude-openstack/deployment-sequence-and-monitor-analysis.png)
+
+> 배포 Playbook 순서 확인 후 Ceph `monitor_address` 오류의 설정 위치와 점검 대상을 추적한 대화
+
+- `setup-hosts`부터 Ceph Client Role까지의 실행 순서 확인
+- 오류 메시지를 기반으로 MON Endpoint 설정 누락 추론
+- `user_variables`·`ceph.conf`·Network Interface의 교차 확인
+- AI 답변만으로 성공 판정하지 않고 실제 설정과 실행 결과의 재검증 필요
+
+:::warning 공개 범위 확인
+이미지에 내부 서버명과 IP 주소가 포함되어 있어 외부 공개 전 익명화 또는 공개 승인 필요
+:::
+
 ## 폐쇄망 배포 제약
 
 - 인터넷 Repository 접근이 불가능한 Air-Gap 환경
