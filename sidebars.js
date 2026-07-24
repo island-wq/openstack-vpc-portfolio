@@ -58,6 +58,7 @@ const sidebars = {
         'test-cases/ovn-octavia',
         'test-cases/powerstore-lun-management',
         'test-cases/ovn-gateway',
+        'test-cases/ceph-cluster',
       ],
     },
   ],
