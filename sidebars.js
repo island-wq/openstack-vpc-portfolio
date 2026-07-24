@@ -52,7 +52,7 @@ const sidebars = {
     },
     {
       type: 'category',
-      label: '테스트 케이스',
+      label: '4. 테스트 케이스',
       link: {type: 'doc', id: 'test-cases/intro'},
       items: [
         'test-cases/ovn-octavia',
@@ -81,7 +81,7 @@ const sidebars = {
     },
     {
       type: 'category',
-      label: 'Home Assistant',
+      label: '5. Home Assistant',
       link: {type: 'doc', id: 'home-ai/intro'},
       items: [],
     },
