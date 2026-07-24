@@ -5,7 +5,7 @@ import Heading from '@theme/Heading';
 import styles from './index.module.css';
 
 const highlights = [
-  ['4 Case Studies', 'VPC·HCI·PoC·기능 검증'],
+  ['5 Case Studies', 'VPC·HCI·PoC·기능 검증·Home Assistant'],
   ['Architecture', 'OVN·Geneve·Ceph 기반 설계'],
   ['Validation', '기능·성능·가용성 검증'],
   ['Migration', 'VMware에서 KVM으로 전환'],
@@ -40,6 +40,13 @@ const projects = [
     tags: ['Octavia', 'OVN', 'L4', 'Load Balancer'],
     link: '/docs/test-cases/intro',
   },
+  {
+    number: '05',
+    title: 'Home Assistant',
+    description: 'Home Assistant와 홈서버를 기반으로 AI 비서·가전 제어·생활 데이터 수집·재구성 체계를 통합.',
+    tags: ['Home Assistant', 'AI Assistant', 'Podman', 'Automation'],
+    link: '/docs/home-ai/intro',
+  },
 ];
 
 function Home() {
@@ -72,6 +79,9 @@ function Home() {
             </Link>
             <Link className="button button--secondary button--lg" to="/docs/test-cases/intro">
               테스트 케이스
+            </Link>
+            <Link className="button button--secondary button--lg" to="/docs/home-ai/intro">
+              Home Assistant
             </Link>
           </div>
         </div>

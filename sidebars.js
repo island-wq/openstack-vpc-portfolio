@@ -79,6 +79,12 @@ const sidebars = {
         'test-cases/cinder-multibackend',
       ],
     },
+    {
+      type: 'category',
+      label: 'Home Assistant',
+      link: {type: 'doc', id: 'home-ai/intro'},
+      items: [],
+    },
   ],
 };
 
