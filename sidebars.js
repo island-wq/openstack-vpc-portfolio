@@ -59,6 +59,7 @@ const sidebars = {
         'test-cases/powerstore-lun-management',
         'test-cases/ovn-gateway',
         'test-cases/ceph-cluster',
+        'test-cases/security-group-logging',
       ],
     },
   ],
