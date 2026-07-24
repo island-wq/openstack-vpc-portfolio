@@ -53,20 +53,40 @@ flowchart TB
 ## 배포 흐름
 
 ```mermaid
-flowchart LR
-  precheck["1. Disk·Network 점검"]
-  inventory["2. Inventory 구성"]
-  variables["3. Ceph·RBD 변수 구성"]
-  repo["4. Offline Repo·Pin 적용"]
-  hosts["5. setup-hosts"]
-  infra["6. setup-infrastructure"]
-  ceph["7. ceph-install"]
-  health["8. Ceph Health 검증"]
-  openstack["9. setup-openstack"]
-  rbd["10. RBD 연동 검증"]
+flowchart TB
+  subgraph prepare["1단계 · 사전 준비"]
+    direction LR
+    precheck["1. Disk·Network<br/>점검"]
+    inventory["2. Inventory<br/>구성"]
+    variables["3. Ceph·RBD<br/>변수 구성"]
+    precheck --> inventory --> variables
+  end
 
-  precheck --> inventory --> variables --> repo
-  repo --> hosts --> infra --> ceph --> health --> openstack --> rbd
+  subgraph foundation["2단계 · 배포 기반 구성"]
+    direction LR
+    repo["4. Offline Repo<br/>APT Pin 적용"]
+    hosts["5. setup-hosts"]
+    infra["6. setup-infrastructure"]
+    repo --> hosts --> infra
+  end
+
+  subgraph cluster["3단계 · Ceph 구축"]
+    direction LR
+    ceph["7. ceph-install"]
+    health["8. Ceph Health<br/>검증"]
+    ceph --> health
+  end
+
+  subgraph integration["4단계 · OpenStack 연동"]
+    direction LR
+    openstack["9. setup-openstack"]
+    rbd["10. RBD 연동<br/>검증"]
+    openstack --> rbd
+  end
+
+  variables --> repo
+  infra --> ceph
+  health --> openstack
 ```
 
 ## 1. 사전 준비
