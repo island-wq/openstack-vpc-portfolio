@@ -85,6 +85,16 @@ const sidebars = {
       link: {type: 'doc', id: 'home-ai/intro'},
       items: [],
     },
+    {
+      type: 'category',
+      label: '6. AI Assistant',
+      link: {type: 'doc', id: 'ai-assistant/intro'},
+      items: [
+        'ai-assistant/gb10-local-ai-platform',
+        'ai-assistant/claude-openstack-deployment',
+        'ai-assistant/openclaw-multi-agent-operations',
+      ],
+    },
   ],
 };
 
