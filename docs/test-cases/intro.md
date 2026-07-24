@@ -17,3 +17,4 @@ description: OpenStack 기능 단위 설치·동작·제약 검증 사례
 4. [Ceph Cluster 가이드](./ceph-cluster.md)
 5. [Security Group Logging 방법](./security-group-logging.md)
 6. [Cinder MultiBackend 가중치](./cinder-multibackend-weighting.md)
+7. [LVM iSCSI Cinder Backend 가중치](./lvm-iscsi-cinder-backend.md)
