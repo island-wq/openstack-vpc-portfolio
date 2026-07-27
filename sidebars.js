@@ -14,7 +14,6 @@ const sidebars = {
         'vpc/validation',
         'vpc/results-and-impact',
         'vpc/risks-and-roadmap',
-        'vpc/glossary',
       ],
     },
     {
@@ -30,7 +29,6 @@ const sidebars = {
         'hci/design-decisions',
         'hci/validation',
         'hci/results-and-roadmap',
-        'hci/glossary',
       ],
     },
     {
@@ -47,7 +45,6 @@ const sidebars = {
         'poc/design-decisions',
         'poc/validation',
         'poc/results-and-roadmap',
-        'poc/glossary',
       ],
     },
     {

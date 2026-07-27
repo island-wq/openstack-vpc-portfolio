@@ -60,9 +60,11 @@ flowchart TB
 ## 실제 AI 협업 화면
 
 ### 작업 이력 검토와 현황 정리
+![OpenStack-Ansible 작업 이력 검토 화면 1](./_assets/Pasted%20image%2020260727125921.png)
 
-![OpenStack-Ansible 작업 이력 검토 요청과 AI 기반 현황 정리](/img/ai-assistant/claude-openstack/work-history-review-request.png)
 
+
+![OpenStack-Ansible 작업 이력 검토 화면 2](./_assets/Pasted%20image%2020260727125947.png)
 > 이전 작업 내용을 기반으로 대상 서버·노드·배포 상태를 재구성하고 다음 검토 범위를 정리한 대화
 
 - 이전 작업 이력과 대상 환경의 연결
@@ -71,9 +73,7 @@ flowchart TB
 - 실제 재개 전 최신 상태 조회 필요
 
 ### 배포 순서와 Ceph MON 오류 분석
-
-![OpenStack-Ansible 배포 순서 확인과 Ceph monitor_address 오류 분석](/img/ai-assistant/claude-openstack/deployment-sequence-and-monitor-analysis.png)
-
+![OpenStack-Ansible 배포 순서와 Ceph MON 오류 분석](./_assets/Pasted%20image%2020260727130015.png)
 > 배포 Playbook 순서 확인 후 Ceph `monitor_address` 오류의 설정 위치와 점검 대상을 추적한 대화
 
 - `setup-hosts`부터 Ceph Client Role까지의 실행 순서 확인

@@ -27,69 +27,9 @@ flowchart LR
   vpc --> services["Internal Services<br/>Storage / Peering"]
 ```
 
-## 배포 구조
-
-```mermaid
-flowchart TB
-  subgraph control["Control Plane"]
-    director["Director / Undercloud"]
-    controllers["Controller Nodes x3<br/>API, DB, OVN DB"]
-  end
-
-  subgraph data["Data Plane"]
-    gateways["Gateway Nodes x2+<br/>SNAT, External Gateway"]
-    computes["Compute Nodes xN<br/>VM, E-W Routing, Distributed FIP"]
-  end
-
-  subgraph networks["Physical Networks"]
-    management["Management / API"]
-    overlay["Overlay Network<br/>Geneve"]
-    service["Provider / External"]
-    storage["Storage"]
-  end
-
-  director --> controllers
-  controllers --> gateways
-  controllers --> computes
-  overlay --- gateways
-  overlay --- computes
-  service --- gateways
-  service --- computes
-  storage --- controllers
-  storage --- computes
-  management --- director
-  management --- controllers
-```
-
 ## VPC 내부 구조
+![VPC 내부 구조](./_assets/Pasted%20image%2020260727121505.png)
 
-```mermaid
-flowchart TB
-  external["Provider External Network"] --> igw["Internet Gateway<br/>Router External Gateway"]
-
-  subgraph project["OpenStack Project = VPC"]
-    routerNet["Router Network<br/>사용자 비노출"]
-    routePublic["Route Table A"]
-    routePrivateA["Route Table B"]
-    routePrivateB["Route Table C"]
-    publicSubnet["Public Subnet"]
-    privateSubnetA["Private Subnet - App"]
-    privateSubnetB["Private Subnet - DB"]
-    nat["NAT Gateway"]
-
-    routePublic --- routerNet
-    routePrivateA --- routerNet
-    routePrivateB --- routerNet
-    routePublic --> publicSubnet
-    routePrivateA --> privateSubnetA
-    routePrivateB --> privateSubnetB
-    publicSubnet --> nat
-    privateSubnetA --> nat
-    privateSubnetB --> nat
-  end
-
-  igw --> routePublic
-```
 
 ## 설계 특성
 

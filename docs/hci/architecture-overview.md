@@ -30,27 +30,8 @@ flowchart LR
 
 ## 물리 배포 구조
 
-```mermaid
-flowchart TB
-  mgmt["Management / Deployer Node<br/>PXE · Repository · Operations"]
-  switchA["10GbE Switch A"]
-  switchB["10GbE Switch B"]
+![HCI 물리 배포 구조](./_assets/Pasted%20image%2020260727125540.png)
 
-  subgraph hci["HCI Cluster"]
-    node1["HCI Node 1<br/>Controller · Compute · Ceph"]
-    node2["HCI Node 2<br/>Controller · Compute · Ceph"]
-    node3["HCI Node 3<br/>Controller · Compute · Ceph"]
-  end
-
-  mgmt --> switchA
-  mgmt --> switchB
-  switchA === node1
-  switchA === node2
-  switchA === node3
-  switchB === node1
-  switchB === node2
-  switchB === node3
-```
 
 ## HCI 노드 내부 역할
 
@@ -82,4 +63,3 @@ flowchart TB
 - 노드 장애 시 컴퓨트와 스토리지 용량이 동시에 감소
 - Ceph Recovery가 API와 VM 트래픽에 영향을 줄 가능성
 - 대규모 확장 시 역할 분리형 상품으로 전환 필요
-
