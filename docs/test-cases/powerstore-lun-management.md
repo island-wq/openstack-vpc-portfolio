@@ -141,5 +141,5 @@ done
 - Multipath 설정을 통한 LUN 번호 제한 기능 부재
 - LUN 255 초과 사용 시 Linux SCSI 탐색 범위 확대 필요
 - Driver Customizing보다 Host 탐색 범위 확대 우선 검토 필요
-- Custom Driver 적용 시 동시성·Upgrade·회귀시험 기준 수립 필요
+
 
