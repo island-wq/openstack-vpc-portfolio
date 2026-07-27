@@ -3,35 +3,13 @@ title: PoC 아키텍처
 description: 두 PoC 사례의 공통 물리·논리 아키텍처
 ---
 
-# PoC 아키텍처
+# PoC 아키텍처 (Private cloud 공통환경)
 
-## 공통 물리 구조
+## 물리 구조
 
-```mermaid
-flowchart TB
-  operator["운영자"] --> portal["관리 포털·OpenStack API"]
-  deploy["배포·Repository 노드"] --> control["Controller 노드"]
-  control --> compute["Compute 노드"]
-  control --> storage["외부 블록 스토리지"]
-  compute --> storage
+**![](_assets/Pasted%20image%2020260727154522.png)**
 
-  subgraph networks["분리 네트워크"]
-    mgmt["관리·External API"]
-    internal["Internal API"]
-    tenant["Tenant Overlay"]
-    provider["Provider Service"]
-    storageNet["Storage·iSCSI Multipath"]
-  end
-
-  portal --> mgmt
-  control --> internal
-  compute --> tenant
-  compute --> provider
-  control --> storageNet
-  compute --> storageNet
-```
-
-## 논리 자원 구조
+## 논리 구조
 
 ```mermaid
 flowchart LR
@@ -47,7 +25,7 @@ flowchart LR
   shared --> external["IDC·외부 서비스망"]
 ```
 
-## 서비스 흐름
+## 서비스 Flow
 
 ```mermaid
 flowchart LR
@@ -66,4 +44,4 @@ flowchart LR
 - 외부 연결의 Provider Network 집중
 - East-West 트래픽의 DVR 분산 처리
 - 스토리지 경로의 Multipath 구성
-- 실제 주소 대신 논리 역할 중심 공개
+
