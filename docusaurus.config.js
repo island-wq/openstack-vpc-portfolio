@@ -6,8 +6,8 @@ const [organizationName, projectName] = repository.split('/');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Private Cloud Architecture Portfolio',
-  tagline: '프라이빗 클라우드 아키텍처 설계부터 상품화까지',
+  title: 'Assist@IS',
+  tagline: 'OpenStack, 홈랩, AI 자동화를 기록하는 개인 기술 블로그',
   favicon: 'img/favicon.svg',
   url: 'https://portfolio.my-assistant.co.kr',
   baseUrl: '/',
@@ -53,13 +53,13 @@ const config = {
       },
     ],
     navbar: {
-      title: 'Private Cloud Portfolio',
+      title: 'Assist@IS',
       items: [
         {
           type: 'docSidebar',
           sidebarId: 'architectureSidebar',
           position: 'left',
-          label: 'Portfolio',
+          label: '기록',
         },
         {to: '/blog', label: 'Notes', position: 'left'},
         {
@@ -73,24 +73,18 @@ const config = {
       style: 'dark',
       links: [
         {
-          title: 'Case Studies',
+          title: 'Field Notes',
           items: [
             {label: 'VPC 아키텍처 설계', to: '/docs/vpc/intro'},
-            {label: 'HCI 상품 설계', to: '/docs/hci/intro'},
+            {label: 'HCI 아키텍처 기록', to: '/docs/hci/intro'},
             {label: 'HCI 최종 아키텍처', to: '/docs/hci/architecture-overview'},
             {label: 'Private Cloud PoC', to: '/docs/poc/intro'},
-            {label: '테스트 케이스', to: '/docs/test-cases/intro'},
-          ],
-        },
-        {
-          title: 'Resources',
-          items: [
-            {label: 'OpenStack', href: 'https://www.openstack.org/'},
-            {label: 'C4 Model', href: 'https://c4model.com/'},
+            {label: 'OpenStack Lab Notes', to: '/docs/test-cases/intro'},
+            {label: 'AI Assistant', to: '/docs/ai-assistant/intro'},
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Private Cloud Architecture Portfolio.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Assist@IS. 기록하고, 실험하고, 다시 고치는 중.`,
     },
     prism: {
       theme: prismThemes.github,
