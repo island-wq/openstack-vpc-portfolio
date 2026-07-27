@@ -2,7 +2,6 @@
 title: 5. Home Assistant
 description: Home Assistant와 홈서버 기반 운영 자동화
 ---
-
 # 5. Home Assistant
 
 - OMV 홈서버와 Home Assistant 기반 스마트홈·생활 데이터 자동화 적용
@@ -74,6 +73,14 @@ flowchart LR
 - 세탁기·건조기 완료 알림과 모닝 브리핑 자동화 적용
 - 물리 기기 교체와 통합 재연결을 고려한 엔티티 인벤토리 관리
 
+
+### 구성정보
+- 기기 엔티티
+![기기 엔티티 화면 1](./_assets/Pasted%20image%2020260727102338.png)
+![기기 엔티티 화면 2](./_assets/Pasted%20image%2020260727102858.png)
+- 학교 급식표
+![학교 급식표](./_assets/Pasted%20image%2020260727102722.png)
+
 ## 2. OpenClaw AI 연동
 
 ```mermaid
@@ -106,21 +113,27 @@ flowchart LR
 - Home Assistant 재시작 후 OpenClaw MCP 연결 상태 재확인 필요
 - API Key·Home Assistant Token·메신저 Token의 저장소 분리 필요
 
+- 텔레그램으로 기기 정보 확인
+![텔레그램 기기 정보 확인](./_assets/Pasted%20image%2020260727102807.png)
+
+- 일정 등록 및 조회
+![일정 등록 및 조회](./_assets/Pasted%20image%2020260727103131.png)
+
 ## 3. OMV 운영 서비스
 
-| 서비스 | 실행 방식 | 역할 |
-|---|---|---|
-| Home Assistant | Podman, Host Network | 스마트홈 통합·자동화·대시보드 운영 |
-| OpenClaw Gateway | systemd User Service | AI 비서·MCP·메신저 연결 |
-| Music Assistant | Podman | 가정 내 음악 재생·출력 장치 관리 |
-| Cloudflared | Podman | 외부 접속용 Cloudflare Tunnel 제공 |
-| Open WebUI | Podman | LLM 웹 인터페이스 제공 |
-| PhotoPrism·MariaDB | Podman | 사진 분류·검색·메타데이터 관리 |
-| File Browser | Podman | 홈서버 파일 웹 관리 |
-| Transmission | Podman | 다운로드 작업 관리 |
-| Glances | Podman | CPU·메모리·디스크·온도 상태 모니터링 |
-| KEPCO-ON | Podman | 전기 사용량·예상요금 주기 수집 |
-| 급식·관리비 수집기 | systemd Timer | 생활 데이터의 정기 수집 |
+| 서비스                | 실행 방식                | 역할                          |
+| ------------------ | -------------------- | --------------------------- |
+| Home Assistant     | Podman, Host Network | 스마트홈 통합·자동화·대시보드 운영         |
+| OpenClaw Gateway   | systemd User Service | AI 비서·MCP·메신저 연결            |
+| Music Assistant    | Podman               | 가정 내 음악 재생·출력 장치 관리         |
+| Cloudflared        | Podman               | 외부 접속용 Cloudflare Tunnel 제공 |
+| Open WebUI         | Podman               | LLM 웹 인터페이스 제공              |
+| PhotoPrism·MariaDB | Podman               | 사진 분류·검색·메타데이터 관리           |
+| File Browser       | Podman               | 홈서버 파일 웹 관리                 |
+| Transmission       | Podman               | 다운로드 작업 관리                  |
+| Glances            | Podman               | CPU·메모리·디스크·온도 상태 모니터링      |
+| KEPCO-ON           | Podman               | 전기 사용량·예상요금 주기 수집           |
+| 급식·관리비 수집기         | systemd Timer        | 생활 데이터의 정기 수집               |
 
 - Debian 기반 OpenMediaVault 호스트 적용
 - 서비스별 컨테이너·볼륨·환경변수·재시작 정책 관리
@@ -152,7 +165,6 @@ flowchart LR
 - Home Assistant 재시작 후에도 이전 값을 유지하는 파일 기반 처리 적용
 - API 키, 계정 정보, 세션 쿠키의 코드 분리 및 런타임 주입 필요
 - 데이터 소스별 실행 주기의 systemd 타이머 적용
-
 > 저장소: [ha-home-modules](https://github.com/island-wq/ha-home-modules)
 
 ## 5. 구조 백업 및 재구성
@@ -162,22 +174,4 @@ flowchart LR
 - 서비스 위치, 포트, 볼륨, 실행 방식, 장애 대응 정보의 카탈로그화
 - 시크릿 값을 제외하고 키 이름과 주입 위치만 관리하는 보안 원칙 적용
 - 호스트부터 컨테이너, Home Assistant, 자체 모듈, 외부 터널까지 복구 순서 정의
-
 > 저장소: [homelab-backup](https://github.com/island-wq/homelab-backup)
-
-## 핵심 설계 판단
-
-- 범용 스마트홈 플랫폼과 자체 수집 모듈의 느슨한 결합 적용
-- 공식 API 제공 영역은 HTTP API 우선 적용
-- 브라우저 실행 필요 영역은 Selenium 기반 제한적 수집 적용
-- 수집 실패가 Home Assistant 전체 운영에 영향을 주지 않는 파일 경계 적용
-- 인증정보 없는 구조 백업과 별도 시크릿 주입 방식 적용
-- AI 도구나 운영자가 동일 문서로 시스템을 복구할 수 있는 재현성 확보
-
-## 운영상 제약
-
-- 외부 웹사이트 변경에 따른 스크래퍼 유지보수 필요
-- 세션 쿠키 만료 시 수동 재발급 필요
-- Chromium과 WebDriver 버전 호환성 점검 필요
-- Home Assistant 재시작 후 AI 비서 연결 상태 재확인 필요
-- 실제 데이터·계정·내부 시스템 정보의 공개 저장소 노출 방지 필요
