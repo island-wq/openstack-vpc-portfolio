@@ -1,9 +1,9 @@
 ---
-title: 7. LVM iSCSI Cinder Backend
+title: 7-1. LVM iSCSI Backend 설치 가이드
 description: 전용 Storage Node의 LVM·LIO iSCSI Cinder Backend 설치 및 MultiBackend 가중치 연동
 ---
 
-# 7. LVM iSCSI Cinder Backend
+# 7-1. LVM iSCSI Backend 설치 가이드
 
 ## 목적
 

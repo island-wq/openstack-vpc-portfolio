@@ -95,16 +95,16 @@ flowchart LR
     OC --> User
 ```
 
-| 설정 영역 | 적용 내용 |
-|---|---|
-| 대화 채널 | 메신저 기반 자연어 질의·명령 처리 |
-| AI 모델 | OpenClaw Main Agent의 LLM 직접 연동 |
-| Home Assistant 연결 | MCP Server와 Long-Lived Access Token 기반 연계 |
-| 제어 범위 | Home Assistant Assist에 허용한 엔티티만 선택적 노출 |
-| 자연어 처리 | 실제 엔티티 이름과 사용자 표현을 연결하는 별칭 적용 |
-| 부가 기능 | 날씨·검색·캘린더·할 일·생활 정보 조회 연계 |
-| 서비스 운영 | `systemd --user` 기반 OpenClaw Gateway 상시 실행 |
-| 재구성 | 모델·라우팅·노출 엔티티·별칭 적용 스크립트 관리 |
+| 설정 영역             | 적용 내용                                      |
+| ----------------- | ------------------------------------------ |
+| 대화 채널             | 메신저 기반 자연어 질의·명령 처리                        |
+| AI 모델             | OpenClaw Main Agent의 LLM 직접 연동             |
+| Home Assistant 연결 | MCP Server와 Long-Lived Access Token 기반 연계  |
+| 제어 범위             | Home Assistant Assist에 허용한 엔티티만 선택적 노출     |
+| 자연어 처리            | 실제 엔티티 이름과 사용자 표현을 연결하는 별칭 적용              |
+| 부가 기능             | 날씨·검색·캘린더·할 일·생활 정보 조회 연계                  |
+| 서비스 운영            | `systemd --user` 기반 OpenClaw Gateway 상시 실행 |
+| 재구성               | 모델·라우팅·노출 엔티티·별칭 적용 스크립트 관리                |
 
 - AI 응답과 실제 기기 제어 경로의 MCP 기반 분리
 - Home Assistant에 노출한 엔티티만 제어 가능한 최소 권한 구조 적용
@@ -114,12 +114,10 @@ flowchart LR
 - API Key·Home Assistant Token·메신저 Token의 저장소 분리 필요
 
 - 텔레그램으로 기기 정보 확인
-- ![](Pasted%20image%2020260727102807.png)
-
+![텔레그램 기기 정보 확인](./_assets/Pasted%20image%2020260727114224.png)
 
 - 일정 등록 및 조회
-- 
-![일정 등록 및 조회](./_assets/Pasted%20image%2020260727103131.png)
+![일정 등록 및 조회](./_assets/Pasted%20image%2020260727114242.png)
 
 ## 3. OMV 운영 서비스
 

@@ -73,6 +73,7 @@ const sidebars = {
           label: '7. LVM iSCSI Cinder Backend',
           link: {type: 'doc', id: 'test-cases/lvm-iscsi-cinder-backend'},
           items: [
+            'test-cases/lvm-iscsi-cinder-backend-installation',
             'test-cases/lvm-iscsi-deploy-config',
           ],
         },
