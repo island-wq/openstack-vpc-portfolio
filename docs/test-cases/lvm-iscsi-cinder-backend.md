@@ -452,3 +452,25 @@ sudo fdisk -l /dev/vdb
 - [targetcli-fb](https://github.com/open-iscsi/targetcli-fb)
 - [rtslib-fb](https://github.com/open-iscsi/rtslib-fb)
 - [Debian LIO](https://wiki.debian.org/iSCSI/LIO)
+
+
+## 운영 고려사항
+
+- LVM Backend의 Storage Node 단일 장애 위험
+- Production 환경의 Storage Node·Path 이중화 필요
+- Thin Pool Data·Metadata 사용률 임계치 모니터링 필요
+- VG Free Space와 Cinder Capacity Report 정합성 확인 필요
+- iSCSI CHAP·Network 분리·Firewall 정책 적용 필요
+- Target Configuration과 Cinder DB 간 정합성 관리 필요
+- Cinder Upgrade 시 LIO Helper·Package 호환성 검증 필요
+
+## 확인 결과
+
+- 전용 Storage Node의 LVM Thin Pool 구성 확인
+- LIO 기반 iSCSI Target Export 적용
+- Primary·Secondary iSCSI Portal 구성 가능
+- LVM·NFS MultiBackend 동시 운영 적용
+- Goodness 가중치 기반 LVM Primary 선택 적용
+- LVM 불가 시 NFS Secondary 선택 가능
+- Compute Node의 iSCSI·Multipath 경로 검증 필요
+- 운영 적용 전 Storage Node·Network 이중화 필요

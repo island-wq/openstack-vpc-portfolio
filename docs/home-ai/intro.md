@@ -114,9 +114,11 @@ flowchart LR
 - API Key·Home Assistant Token·메신저 Token의 저장소 분리 필요
 
 - 텔레그램으로 기기 정보 확인
-![텔레그램 기기 정보 확인](./_assets/Pasted%20image%2020260727102807.png)
+- ![](Pasted%20image%2020260727102807.png)
+
 
 - 일정 등록 및 조회
+- 
 ![일정 등록 및 조회](./_assets/Pasted%20image%2020260727103131.png)
 
 ## 3. OMV 운영 서비스
