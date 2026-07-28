@@ -4,7 +4,7 @@ title: OMV에 Home Assistant 결합하기 1
 description: 제한된 홈서버에 OMV와 Home Assistant를 함께 구성한 과정
 date: 2026-07-28
 authors:
-  - portfolio
+  - Assist@IS
 tags:
   - Home Assistant
   - OpenMediaVault
