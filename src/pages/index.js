@@ -80,7 +80,7 @@ function Home() {
               기록 둘러보기
             </Link>
             <Link className="button button--secondary button--lg" to="/blog">
-              Notes
+              Blog
             </Link>
           </div>
         </div>

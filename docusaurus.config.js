@@ -59,9 +59,9 @@ const config = {
           type: 'docSidebar',
           sidebarId: 'architectureSidebar',
           position: 'left',
-          label: '기록',
+          label: '포트폴리오',
         },
-        {to: '/blog', label: 'Notes', position: 'left'},
+        {to: '/blog', label: 'Blog', position: 'left'},
         {
           href: `https://github.com/${repository}`,
           label: 'GitHub',
