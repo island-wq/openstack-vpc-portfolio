@@ -46,6 +46,11 @@ const config = {
     ],
   ],
   themeConfig: {
+    docs: {
+      sidebar: {
+        autoCollapseCategories: true,
+      },
+    },
     metadata: [
       {
         name: 'keywords',

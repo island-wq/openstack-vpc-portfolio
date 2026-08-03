@@ -4,6 +4,7 @@ const sidebars = {
     {
       type: 'category',
       label: '1. VPC 아키텍처 설계',
+      collapsed: true,
       link: {type: 'doc', id: 'vpc/intro'},
       items: [
         'vpc/problem-and-goals',
