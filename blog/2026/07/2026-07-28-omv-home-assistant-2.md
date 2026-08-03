@@ -26,3 +26,11 @@ OMV와 Home Assistant 홈랩에 외부 연결과 AI 에이전트를 더해 본 �
   - 공인IP 노출없이 사설대역의 IP를 통해 DNS쿼리 가능
   - Cloudflare 무료서비스
   - 1개의 도메인에 여러 서브 도메인을 연결할 수 있음
+
+
+## OpenClaw
+
+![](_assets/Pasted%20image%2020260730233217.png)
+- OMV가 동작 중인 NUC 호스트에 HomeAssistant 와 연동하기 위해 OpenClaw 적용
+
+![697](_assets/Pasted%20image%2020260730235028.png)
