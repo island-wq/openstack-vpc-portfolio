@@ -81,6 +81,7 @@ const config = {
             {label: 'Private Cloud PoC', to: '/docs/poc/intro'},
             {label: 'OpenStack Lab Notes', to: '/docs/test-cases/intro'},
             {label: 'AI Assistant', to: '/docs/ai-assistant/intro'},
+            {label: 'PrivateCloud VPC 서비스 시나리오', to: '/docs/private-cloud-vpc-service/intro'},
           ],
         },
       ],

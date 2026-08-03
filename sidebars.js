@@ -93,6 +93,12 @@ const sidebars = {
         'ai-assistant/openclaw-multi-agent-operations',
       ],
     },
+    {
+      type: 'category',
+      label: '7. PrivateCloud의 격리네트워크(VPC) 구현 서비스 시나리오',
+      link: {type: 'doc', id: 'private-cloud-vpc-service/intro'},
+      items: [],
+    },
   ],
 };
 

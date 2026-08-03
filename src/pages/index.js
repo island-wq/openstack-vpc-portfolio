@@ -54,6 +54,13 @@ const projects = [
     tags: ['Claude', 'Codex', 'OpenClaw', 'Operations'],
     link: '/docs/ai-assistant/intro',
   },
+  {
+    number: '07',
+    title: 'PrivateCloud VPC Service Scenario',
+    description: '기관·프로젝트·서비스 구간을 Tenant와 Provider Network로 분리하고 통신 정책을 설계한 기록.',
+    tags: ['VPC', 'Tenant Network', 'Provider Network', 'Firewall'],
+    link: '/docs/private-cloud-vpc-service/intro',
+  },
 ];
 
 function Home() {
