@@ -61,6 +61,13 @@ const projects = [
     tags: ['VPC', 'Tenant Network', 'Provider Network', 'Firewall'],
     link: '/docs/private-cloud-vpc-service/intro',
   },
+  {
+    number: '08',
+    title: 'GB10 x 2 Node Cluster',
+    description: '2개 GB10 노드에서 분산 추론·파인튜닝·OpenStack MCP 서비스를 구성하고 검증한 기록.',
+    tags: ['GB10', 'Ray', 'vLLM', 'NCCL'],
+    link: '/docs/gb10-2node-cluster/intro',
+  },
 ];
 
 function Home() {

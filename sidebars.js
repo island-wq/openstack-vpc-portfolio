@@ -100,6 +100,12 @@ const sidebars = {
       link: {type: 'doc', id: 'private-cloud-vpc-service/intro'},
       items: [],
     },
+    {
+      type: 'category',
+      label: '8. GB10 x 2 Node Cluster',
+      link: {type: 'doc', id: 'gb10-2node-cluster/intro'},
+      items: [],
+    },
   ],
 };
 
