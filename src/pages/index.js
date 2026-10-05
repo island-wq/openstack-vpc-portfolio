@@ -68,6 +68,13 @@ const projects = [
     tags: ['GB10', 'Ray', 'vLLM', 'NCCL'],
     link: '/docs/gb10-2node-cluster/intro',
   },
+  {
+    number: '09',
+    title: 'Parallel LiveMigration on OpenStack Gazpacho',
+    description: '10G와 LACP 20G 환경에서 VM 동시 이관과 QEMU 멀티채널 전송의 효과·한계·운영 기준을 검증한 기록.',
+    tags: ['OpenStack Gazpacho', 'Live Migration', 'QEMU multifd', 'LACP'],
+    link: '/docs/parallel-livemigration-gazpacho/intro',
+  },
 ];
 
 function Home() {

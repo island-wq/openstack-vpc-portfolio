@@ -106,6 +106,15 @@ const sidebars = {
       link: {type: 'doc', id: 'gb10-2node-cluster/intro'},
       items: [],
     },
+    {
+      type: 'category',
+      label: '9. Parallel LiveMigration on OpenStack Gazpacho',
+      link: {type: 'doc', id: 'parallel-livemigration-gazpacho/intro'},
+      items: [
+        'parallel-livemigration-gazpacho/test-validation-manual',
+        'parallel-livemigration-gazpacho/poc-results-manual',
+      ],
+    },
   ],
 };
 

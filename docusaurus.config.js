@@ -88,6 +88,7 @@ const config = {
             {label: 'AI Assistant', to: '/docs/ai-assistant/intro'},
             {label: 'PrivateCloud VPC 서비스 시나리오', to: '/docs/private-cloud-vpc-service/intro'},
             {label: 'GB10 x 2 Node Cluster', to: '/docs/gb10-2node-cluster/intro'},
+            {label: 'Gazpacho Parallel LiveMigration', to: '/docs/parallel-livemigration-gazpacho/intro'},
           ],
         },
       ],
