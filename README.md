@@ -1,4 +1,4 @@
-# Private Cloud Architecture Portfolio
+# AssistIS's Private Portfolio
 
 OpenStack 기반 프라이빗 클라우드의 아키텍처 설계와 상품화 과정을 정리한 포트폴리오입니다.
 
